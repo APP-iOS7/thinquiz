@@ -1,11 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:thinquiz/model/quiz.dart';
+
+import 'home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final List<Quiz> _testData = [
+    Quiz(
+      title: '퀴즈 1',
+      point: 10,
+      hint: '힌트 1',
+      content: '내용 1',
+      answer: '정답 1',
+      solution: '해설 1',
+      status: '상태 1',
+      quizImage: '이미지 1',
+    ),
+    Quiz(
+      title: '퀴즈 2',
+      point: 20,
+      hint: '힌트 2',
+      content: '내용 2',
+      answer: '정답 2',
+      solution: '해설 2',
+      status: '상태 2',
+      quizImage: '이미지 2',
+    ),
+    Quiz(
+      title: '퀴즈 3',
+      point: 30,
+      hint: '힌트 3',
+      content: '내용 3',
+      answer: '정답 3',
+      solution: '해설 3',
+      status: '상태 3',
+      quizImage: '이미지 3',
+    ),
+  ];
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -16,7 +51,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Text('Flutter Demo Home Page'),
+      home: MainScreen(data: Future.value(_testData)),
     );
   }
 }
