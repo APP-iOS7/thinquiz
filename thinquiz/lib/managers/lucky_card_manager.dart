@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:thinquiz/models/lucky_card.dart';
 
 class LuckyCardManager {
@@ -20,5 +21,6 @@ class LuckyCardManager {
   }
 
   int get count => _items.length;
-  LuckyCard get randomElement => _items[Random().nextInt(count)];
+  List<LuckyCard> get shuffledItems =>
+      [..._items]..shuffle(Random(Random().nextInt(10000)));
 }
