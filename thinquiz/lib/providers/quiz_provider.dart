@@ -6,7 +6,7 @@ class QuizProvider extends ChangeNotifier {
 
   QuizProvider() {
     _items = [
-      Quiz(title: '더하기 문제 1', point: 5, hint: '3은 아니다', content: '1 더하기 1은?', answer: '2', solution: '1 더하기 1은 2이다', status: QuizStatus.pending, quizImage: ''),
+      Quiz(title: '더하기 문제 1', point: 5, hint: '3은 아니다', content: '1 더하기 1은?', answer: '2', solution: '1 더하기 1은 2이다', status: QuizStatus.solving, quizImage: ''),
       Quiz(title: '더하기 문제 2', point: 5, hint: '3은 아니다', content: '2 더하기 2는?', answer: '4', solution: '2 더하기 2는 4이다', status: QuizStatus.pending, quizImage: ''),
       Quiz(title: '더하기 문제 3', point: 5, hint: '3은 아니다', content: '3 더하기 3은?', answer: '6', solution: '3 더하기 3는 6이다', status: QuizStatus.pending, quizImage: ''),
       Quiz(title: '더하기 문제 4', point: 5, hint: '3은 아니다', content: '4 더하기 4는?', answer: '8', solution: '4 더하기 4는 8이다', status: QuizStatus.pending, quizImage: ''),
@@ -29,7 +29,7 @@ class QuizProvider extends ChangeNotifier {
         return Colors.green;
       case QuizStatus.incorrect:
         return Colors.red;
-      case QuizStatus.inProgress:
+      case QuizStatus.solving:
         return Colors.amber;
       case QuizStatus.pending:
         return Colors.grey;

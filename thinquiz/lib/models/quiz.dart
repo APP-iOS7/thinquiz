@@ -20,4 +20,4 @@ class Quiz {
   });
 }
 
-enum QuizStatus { correct, incorrect, pending, inProgress }
+enum QuizStatus { correct, incorrect, pending, solving }

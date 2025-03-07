@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 import 'package:thinquiz/providers/quiz_provider.dart';
 
@@ -87,16 +88,13 @@ class _QuizScreenState extends State<QuizScreen> {
                                 keyboardType: TextInputType.multiline,
                                 controller: _answerController,
                                 decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  hintText: '정답 작성'
-                                ),
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    hintText: '정답 작성'),
                               ),
                             ),
-                          )
-                      )
-                  ),
+                          ))),
                   SizedBox(height: 10),
                   Row(
                     children: [
@@ -130,7 +128,18 @@ class _QuizScreenState extends State<QuizScreen> {
                           child: TextButton(
                               style: TextButton.styleFrom(
                                   backgroundColor: Color(0xffd6d5c9)),
-                              onPressed: () {},
+                              onPressed: () {
+                                quiz.items[game.quizIndex].status =
+                                    _answerController.text ==
+                                            quiz.items[game.quizIndex].answer
+                                        ? QuizStatus.correct
+                                        : QuizStatus.incorrect;
+
+                                game.increaseQuizIndex();
+                                _answerController.text = "";
+                                quiz.items[game.quizIndex].status =
+                                    QuizStatus.solving;
+                              },
                               child: const Text('제출',
                                   style: TextStyle(color: Colors.black)))),
                     ],
