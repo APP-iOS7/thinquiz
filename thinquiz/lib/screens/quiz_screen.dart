@@ -11,6 +11,8 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  final TextEditingController _answerController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(builder: (context, game, child) {
@@ -76,7 +78,25 @@ class _QuizScreenState extends State<QuizScreen> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Color(0xffd6d5c9)),
-                          child: Center(child: const Text('정답 작성')))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Center(
+                              child: TextField(
+                                maxLines: null,
+                                expands: true,
+                                keyboardType: TextInputType.multiline,
+                                controller: _answerController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  hintText: '정답 작성'
+                                ),
+                              ),
+                            ),
+                          )
+                      )
+                  ),
                   SizedBox(height: 10),
                   Row(
                     children: [
@@ -111,12 +131,8 @@ class _QuizScreenState extends State<QuizScreen> {
                               style: TextButton.styleFrom(
                                   backgroundColor: Color(0xffd6d5c9)),
                               onPressed: () {},
-                              child: const Text(
-                                '제출',
-                                style: TextStyle(color: Colors.black)
-                              )
-                          )
-                      ),
+                              child: const Text('제출',
+                                  style: TextStyle(color: Colors.black)))),
                     ],
                   )
                 ],
