@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'model/game.dart';
+import 'models/game.dart';
 import 'model/quiz.dart';
 
 class QuizSolutionScreen extends StatelessWidget {

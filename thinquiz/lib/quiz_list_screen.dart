@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'quiz_solution_screen.dart';
-import 'model/game.dart';
+import 'models/game.dart';
 
 class QuizListScreen extends StatelessWidget {
   final Future<List<Game>> _gameData;

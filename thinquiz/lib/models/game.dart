@@ -1,4 +1,4 @@
-import 'package:thinquiz/models/quiz.dart';
+import 'package:thinquiz/model/quiz.dart';
 
 class Game {
   int hintCount;
@@ -6,7 +6,8 @@ class Game {
   int totalPoint;
   List<Quiz> quizList;
 
-  Game({required this.hintCount,
+  Game(
+      {required this.hintCount,
       required this.quizIndex,
       required this.totalPoint,
       required this.quizList});

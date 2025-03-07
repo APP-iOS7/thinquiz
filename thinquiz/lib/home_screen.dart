@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'model/game.dart';
+import 'models/game.dart';
 import 'quiz_list_screen.dart';
 
 class MainScreen extends StatelessWidget {
