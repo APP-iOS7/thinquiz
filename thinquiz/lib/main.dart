@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/providers/quiz_provider.dart';
 import 'package:thinquiz/screens/quiz_screen.dart';
 
 void main() {
@@ -16,8 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => GameProvider()),
-        ChangeNotifierProvider(create: (context) => QuizProvider())
+        ChangeNotifierProvider(create: (context) => GameProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

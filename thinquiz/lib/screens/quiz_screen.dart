@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/providers/quiz_provider.dart';
 import 'package:thinquiz/screens/lucky_card_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -18,10 +17,9 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(builder: (context, game, child) {
-      return Consumer<QuizProvider>(builder: (context, quiz, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(quiz.items[game.item.quizIndex].title),
+            title: Text(game.quizItems[game.item.quizIndex].title),
           ),
           body: SafeArea(
             child: Padding(
@@ -39,7 +37,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           child: Container(
                               width: 20,
                               height: 15,
-                              color: quiz.getQuizColor(i)),
+                              color: game.getQuizColor(i)),
                         ),
                       ),
                     SizedBox(width: 20),
@@ -62,7 +60,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         borderRadius: BorderRadius.circular(5),
                         color: Color(0xFFD6D5C9)),
                     child: Center(
-                        child: Text(quiz.items[game.item.quizIndex].content)),
+                        child: Text(game.quizItems[game.item.quizIndex].content)),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -130,15 +128,15 @@ class _QuizScreenState extends State<QuizScreen> {
                               style: TextButton.styleFrom(
                                   backgroundColor: Color(0xffd6d5c9)),
                               onPressed: () {
-                                quiz.items[game.quizIndex].status =
+                                game.quizItems[game.quizIndex].status =
                                     _answerController.text ==
-                                            quiz.items[game.quizIndex].answer
+                                            game.quizItems[game.quizIndex].answer
                                         ? QuizStatus.correct
                                         : QuizStatus.incorrect;
 
                                 game.increaseQuizIndex();
                                 _answerController.text = "";
-                                quiz.items[game.quizIndex].status =
+                                game.quizItems[game.quizIndex].status =
                                     QuizStatus.solving;
 
                                 if (game.quizIndex == 2 ||
@@ -162,6 +160,5 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         );
       });
-    });
   }
 }
