@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:thinquiz/providers/game_provider.dart';
+import 'package:thinquiz/providers/quiz_provider.dart';
+
+class QuizScreen extends StatefulWidget {
+  const QuizScreen({super.key});
+
+  @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<GameProvider>(builder: (context, game, child) {
+      return Consumer<QuizProvider>(builder: (context, quiz, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(quiz.items[game.item.quizIndex].title),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("stage"),
+                  Row(children: [
+                    for (int i = 0; i < 10; i++)
+                      Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Transform(
+                          transform: Matrix4.skewX(-0.3),
+                          child: Container(
+                              width: 20,
+                              height: 15,
+                              color: quiz.getQuizColor(i)),
+                        ),
+                      ),
+                    SizedBox(width: 20),
+                    Container(
+                      width: 100,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xFFD6D5C9),
+                      ),
+                      child: Center(child: Text('힌트 3/3')),
+                    )
+                  ]),
+                  SizedBox(height: 10),
+                  Text('문제'),
+                  Container(
+                    width: double.infinity,
+                    height: 120,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color(0xFFD6D5C9)),
+                    child: Center(
+                        child: Text(quiz.items[game.item.quizIndex].content)),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                      width: double.infinity,
+                      height: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffd6d5c9)),
+                      child: Center(child: const Text('그림영역'))),
+                  SizedBox(height: 10),
+                  Text('풀이'),
+                  Expanded(
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(0xffd6d5c9)),
+                          child: Center(child: const Text('정답 작성')))),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFD6D5C9)),
+                              onPressed: () {},
+                              child: const Text('메모',
+                                  style: TextStyle(color: Colors.black)))),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFD6D5C9)),
+                              onPressed: () {},
+                              child: const Text('힌트',
+                                  style: TextStyle(color: Colors.black)))),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFD6D5C9)),
+                              onPressed: () {
+                                game.increaseQuizIndex();
+                              },
+                              child: const Text('패스',
+                                  style: TextStyle(color: Colors.black)))),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xffd6d5c9)),
+                              onPressed: () {},
+                              child: const Text(
+                                '제출',
+                                style: TextStyle(color: Colors.black)
+                              )
+                          )
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+    });
+  }
+}
