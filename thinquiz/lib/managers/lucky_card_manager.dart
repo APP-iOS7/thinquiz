@@ -20,6 +20,5 @@ class LuckyCardManager {
   }
 
   int get count => _items.length;
-
   LuckyCard get randomElement => _items[Random().nextInt(count)];
 }

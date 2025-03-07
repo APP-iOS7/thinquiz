@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 import 'package:thinquiz/providers/quiz_provider.dart';
+import 'package:thinquiz/screens/lucky_card_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -139,6 +140,17 @@ class _QuizScreenState extends State<QuizScreen> {
                                 _answerController.text = "";
                                 quiz.items[game.quizIndex].status =
                                     QuizStatus.solving;
+
+                                if (game.quizIndex == 2 ||
+                                    game.quizIndex == 6) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              LuckyCardScreen()
+                                      )
+                                  );
+                                }
                               },
                               child: const Text('제출',
                                   style: TextStyle(color: Colors.black)))),
