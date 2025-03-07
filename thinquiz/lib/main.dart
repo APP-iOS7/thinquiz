@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:thinquiz/model/quiz.dart';
+import 'package:thinquiz/models/quiz.dart';
 
 import 'home_screen.dart';
 import 'models/game.dart';
-import 'model/quiz.dart';
+import 'models/quiz.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           content: '내용 1',
           answer: '정답 1',
           solution: '해설 1',
-          status: 'correct',
+          status: QuizStatus.correct,
           quizImage: '12',
         ),
         Quiz(
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           content: '내용 2',
           answer: '정답 2',
           solution: '해설 2',
-          status: 'wrong',
+          status: QuizStatus.incorrect,
           quizImage: '',
         ),
         Quiz(
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           content: '내용 3',
           answer: '정답 3',
           solution: '해설 3',
-          status: 'correct',
+          status: QuizStatus.correct,
           quizImage: '',
         ),
       ],

@@ -1,4 +1,4 @@
-import 'package:thinquiz/model/quiz.dart';
+import 'package:thinquiz/models/quiz.dart';
 
 class Game {
   int hintCount;

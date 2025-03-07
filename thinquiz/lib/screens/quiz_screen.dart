@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thinquiz/model/quiz.dart';
+import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 import 'package:thinquiz/screens/lucky_card_screen.dart';
 
