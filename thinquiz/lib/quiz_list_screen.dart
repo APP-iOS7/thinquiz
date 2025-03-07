@@ -58,12 +58,16 @@ class QuizListScreen extends StatelessWidget {
                         color: isCorrect ? Color(0xFFD6D5C9) : Colors.grey,
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(
-                            vertical: 3,
+                            vertical: 4,
                             horizontal: 16,
                           ),
                           title: Text(quiz.title),
-                          subtitle: Text('정답 : ${quiz.answer}'),
-                          trailing: Icon(isCorrect ? Icons.check : Icons.close),
+                          subtitle: Text(
+                            isCorrect
+                                ? '정답 : ${quiz.answer}'
+                                : '정답을 맞추면 해설을 볼 수 있습니다.',
+                          ),
+                          trailing: Icon(isCorrect ? Icons.check : Icons.lock),
                           onTap: () {
                             if (isCorrect == true) {
                               Navigator.push(
@@ -71,6 +75,7 @@ class QuizListScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => QuizSolutionScreen(
                                           gameData: _gameData,
+                                          quizTitle: quiz.title,
                                         )),
                               );
                             }

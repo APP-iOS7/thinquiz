@@ -17,14 +17,14 @@ class MyApp extends StatelessWidget {
       totalPoint: 100,
       quizList: [
         Quiz(
-          title: '퀴즈 1',
+          title: '퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1',
           point: 10,
           hint: '힌트 1',
           content: '내용 1',
           answer: '정답 1',
           solution: '해설 1',
           status: 'correct',
-          quizImage: '이미지 1',
+          quizImage: '12',
         ),
         Quiz(
           title: '퀴즈 2',
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           answer: '정답 2',
           solution: '해설 2',
           status: 'wrong',
-          quizImage: '이미지 2',
+          quizImage: '',
         ),
         Quiz(
           title: '퀴즈 3',
@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
           content: '내용 3',
           answer: '정답 3',
           solution: '해설 3',
-          status: 'pass',
-          quizImage: '이미지 3',
+          status: 'correct',
+          quizImage: '',
         ),
       ],
     ),
