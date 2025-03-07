@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'model/game.dart';
+import 'quiz_list_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final Future<List<Game>> _gameData;
@@ -170,7 +171,15 @@ class MainScreen extends StatelessWidget {
                             alignment: WrapAlignment.center,
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuizListScreen(
+                                              gameData: _gameData,
+                                            )),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(0xFF003049),
                                   foregroundColor: Color(0xFFD6D5C9),
@@ -184,7 +193,7 @@ class MainScreen extends StatelessWidget {
                                   elevation: 4,
                                 ),
                                 child: Text(
-                                  '맞힌 문제 보기',
+                                  '문제 보기',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
