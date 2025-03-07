@@ -5,8 +5,8 @@ import 'model/quiz.dart';
 
 class MainScreen extends StatelessWidget {
   final Future<List<Game>> gameData;
-  final Future<List<Quiz>> quizData;
-  const MainScreen({super.key, required this.gameData, required this.quizData});
+
+  const MainScreen({super.key, required this.gameData});
 
   @override
   Widget build(BuildContext context) {
