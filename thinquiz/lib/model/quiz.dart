@@ -19,16 +19,16 @@ class Quiz {
     required this.quizImage,
   });
 
-  // factory Quiz.fromJson(Map<String, dynamic> json) {
-  //   return Quiz(
-  //     title: json['title'] as String,
-  //     point: json['point'] as int,
-  //     hint: json['hint'] as String,
-  //     content: json['content'] as String,
-  //     answer: json['answer'] as String,
-  //     solution: json['solution'] as String,
-  //     status: json['status'] as String,
-  //     quizImage: json['quizImage'] as String,
-  //   );
-  // }
+  factory Quiz.fromJson(Map<String, dynamic> json) {
+    return Quiz(
+      title: json['title'] as String,
+      point: json['point'] as int,
+      hint: json['hint'] as String,
+      content: json['content'] as String,
+      answer: json['answer'] as String,
+      solution: json['solution'] as String,
+      status: json['status'] as String,
+      quizImage: json['quizImage'] as String,
+    );
+  }
 }
