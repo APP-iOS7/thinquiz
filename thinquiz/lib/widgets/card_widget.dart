@@ -35,9 +35,12 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
   void _selectedCard(int index) {
     if (selectedCard != null || isSelectionComplete) return;
 
+    LuckyCardManager().currentCard = widget.items[index];
+    
     setState(() {
       selectedCard = index;
       isSelectionComplete = true;
+      
     });
   }
 
