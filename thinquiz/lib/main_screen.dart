@@ -4,7 +4,6 @@ import 'model/game.dart';
 import 'model/quiz.dart';
 import 'quiz_list_screen.dart';
 import 'services/game_storage_service.dart';
-import 'quiz_solution_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final Future<List<Game>> _gameData;
@@ -140,6 +139,7 @@ class _MainScreenState extends State<MainScreen> {
                                 ],
                               );
                               await storageService.saveGame(defaultGameData);
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -154,9 +154,6 @@ class _MainScreenState extends State<MainScreen> {
                                       .then(
                                           (game) => game == null ? [] : [game]);
                                 });
-                              });
-                              setState(() {
-                                _gameData = Future.value([defaultGameData]);
                               });
                             },
                             style: ElevatedButton.styleFrom(
@@ -216,10 +213,12 @@ class _MainScreenState extends State<MainScreen> {
                           ElevatedButton(
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => QuizListScreen(
-                                          gameData: _gameData))).then((_) {
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      QuizListScreen(gameData: _gameData),
+                                ),
+                              ).then((_) {
                                 setState(() {
                                   _gameData = GameStorageService()
                                       .loadGame()
@@ -290,7 +289,7 @@ class _MainScreenState extends State<MainScreen> {
                                         builder: (context) => AlertDialog(
                                           title: Text('진행 상황 초기화'),
                                           content: Text(
-                                              '모든 진행 상황이 초기화 됩니다. 계속 하기겠습니까?'),
+                                              '모든 진행 상황이 초기화 됩니다. 계속 하시겠습니까?'),
                                           actions: [
                                             TextButton(
                                               onPressed: () =>
