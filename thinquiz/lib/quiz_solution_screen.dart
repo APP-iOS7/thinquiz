@@ -115,7 +115,7 @@ class QuizSolutionScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width *

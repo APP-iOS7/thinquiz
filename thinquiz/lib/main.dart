@@ -5,7 +5,6 @@ import 'package:thinquiz/model/quiz.dart';
 import 'home_screen.dart';
 import 'model/game.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
           answer: '정답 1',
           solution: '해설 1',
           status: 'correct',
-          quizImage: '12',
+          quizImage: '/Users/sg/Documents/thinquiz/thinquiz/assets/earth.png',
         ),
         Quiz(
           title: '퀴즈 2',
@@ -58,7 +57,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -67,7 +65,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MainScreen(
         gameData: Future.value(_gameData),
-
       ),
     );
   }

@@ -49,7 +49,7 @@ class QuizListScreen extends StatelessWidget {
                     final isCorrect = quiz.status == 'correct';
 
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 2),
                       child: Card(
                         elevation: 3,
                         shape: RoundedRectangleBorder(
