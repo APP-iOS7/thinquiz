@@ -1,70 +1,39 @@
 import 'package:flutter/material.dart';
 
-import 'package:thinquiz/model/quiz.dart';
-
-import 'home_screen.dart';
+import 'main_screen.dart';
 import 'model/game.dart';
+import 'services/game_storage_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final List<Game> _gameData = [
-    //
-    Game(
-      hintCount: 3,
-      quizIndex: 0,
-      totalPoint: 100,
-      quizList: [
-        Quiz(
-          title: '퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1퀴즈 1',
-          point: 10,
-          hint: '힌트 1',
-          content: '내용 1',
-          answer: '정답 1',
-          solution: '해설 1',
-          status: 'correct',
-          quizImage: '/Users/sg/Documents/thinquiz/thinquiz/assets/earth.png',
-        ),
-        Quiz(
-          title: '퀴즈 2',
-          point: 20,
-          hint: '힌트 2',
-          content: '내용 2',
-          answer: '정답 2',
-          solution: '해설 2',
-          status: 'wrong',
-          quizImage: '',
-        ),
-        Quiz(
-          title: '퀴즈 3',
-          point: 30,
-          hint: '힌트 3',
-          content: '내용 3',
-          answer: '정답 3',
-          solution: '해설 3',
-          status: 'correct',
-          quizImage: '',
-        ),
-      ],
-    ),
-
-    //
-  ];
-
+  final GameStorageService _storageService = GameStorageService();
   MyApp({super.key});
+
+  Future<List<Game>> _loadGameData() async {
+    Game? savedGame = await _storageService.loadGame();
+    if (savedGame == null) {
+      // 데이터 임시 생성
+      // await _storageService.saveGame(_defaultGameData);
+      // return [_defaultGameData];
+      return [];
+    }
+    return [savedGame];
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF003049)),
         useMaterial3: true,
       ),
       home: MainScreen(
-        gameData: Future.value(_gameData),
+        gameData: _loadGameData(),
       ),
     );
   }

@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 
 import 'model/game.dart';
+import 'model/quiz.dart';
 import 'quiz_list_screen.dart';
+import 'services/game_storage_service.dart';
+import 'quiz_solution_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   final Future<List<Game>> _gameData;
 
   const MainScreen({super.key, required Future<List<Game>> gameData})
       : _gameData = gameData;
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late Future<List<Game>> _gameData;
+
+  @override
+  void initState() {
+    super.initState();
+    _gameData = widget._gameData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +57,6 @@ class MainScreen extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Text('오류 발생: ${snapshot.error}');
                     }
-
                     /* 진행중인 게임이 없을 때 */
                     else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Column(
@@ -84,7 +99,66 @@ class MainScreen extends StatelessWidget {
                             height: 50,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final storageService = GameStorageService();
+                              final Game defaultGameData = Game(
+                                hintCount: 3,
+                                quizIndex: 0,
+                                totalPoint: 0,
+                                quizList: [
+                                  Quiz(
+                                    title: '퀴즈 1: 대한민국의 수도는?',
+                                    point: 10,
+                                    hint: '4글자입니다.',
+                                    content: '대한민국의 수도를 맞춰보세요.',
+                                    answer: '서울',
+                                    solution: '대한민국의 수도는 서울입니다.',
+                                    status: 'correct',
+                                    quizImage: 'assets/earth.png',
+                                  ),
+                                  Quiz(
+                                    title: '퀴즈 2: 1+1은?',
+                                    point: 10,
+                                    hint: '매우 쉬운 문제입니다.',
+                                    content: '더하기 연산을 해보세요.',
+                                    answer: '2',
+                                    solution: '1+1=2 입니다.',
+                                    status: 'incorrect',
+                                    quizImage: '',
+                                  ),
+                                  Quiz(
+                                    title: '퀴즈 3: 바다가 아닌 것은?',
+                                    point: 10,
+                                    hint: '색깔 이름이 들어간 바다를 생각해보세요.',
+                                    content: '다음 중 실제 바다 이름이 아닌 것은?',
+                                    answer: '보라해',
+                                    solution:
+                                        '홍해, 황해, 청해는 실제 바다 이름이지만, 보라해는 존재하지 않습니다.',
+                                    status: 'incorrect',
+                                    quizImage: '',
+                                  ),
+                                ],
+                              );
+                              await storageService.saveGame(defaultGameData);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QuizListScreen(
+                                    gameData: _gameData,
+                                  ),
+                                ),
+                              ).then((_) {
+                                setState(() {
+                                  _gameData = GameStorageService()
+                                      .loadGame()
+                                      .then(
+                                          (game) => game == null ? [] : [game]);
+                                });
+                              });
+                              setState(() {
+                                _gameData = Future.value([defaultGameData]);
+                              });
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
                               foregroundColor: Color(0xFFD6D5C9),
@@ -106,7 +180,6 @@ class MainScreen extends StatelessWidget {
                         ],
                       );
                     }
-
                     /* 진행중인 게임이 있을 때 */
                     else {
                       return Column(
@@ -141,7 +214,20 @@ class MainScreen extends StatelessWidget {
                             height: 100,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => QuizListScreen(
+                                          gameData: _gameData))).then((_) {
+                                setState(() {
+                                  _gameData = GameStorageService()
+                                      .loadGame()
+                                      .then(
+                                          (game) => game == null ? [] : [game]);
+                                });
+                              });
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
                               foregroundColor: Color(0xFFD6D5C9),
@@ -176,7 +262,7 @@ class MainScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => QuizListScreen(
-                                              gameData: _gameData,
+                                              gameData: widget._gameData,
                                             )),
                                   );
                                 },
@@ -198,7 +284,37 @@ class MainScreen extends StatelessWidget {
                                 ),
                               ),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  final confirmed = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text('진행 상황 초기화'),
+                                          content: Text(
+                                              '모든 진행 상황이 초기화 됩니다. 계속 하기겠습니까?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, false),
+                                              child: Text('취소'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, true),
+                                              child: Text('초기화'),
+                                            ),
+                                          ],
+                                        ),
+                                      ) ??
+                                      // Dialog 외부 터치 시 null을 반환하므로 false로 처리
+                                      false;
+                                  if (confirmed) {
+                                    final storageService = GameStorageService();
+                                    await storageService.clearGame();
+                                    setState(() {
+                                      _gameData = Future.value([]);
+                                    });
+                                  }
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(0xFF902923),
                                   foregroundColor: Color(0xFFD6D5C9),
@@ -212,7 +328,7 @@ class MainScreen extends StatelessWidget {
                                   elevation: 4,
                                 ),
                                 child: Text(
-                                  '진행 사항 초기화',
+                                  '진행 상황 초기화',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
