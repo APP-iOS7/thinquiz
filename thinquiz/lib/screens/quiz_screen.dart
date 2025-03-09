@@ -18,43 +18,67 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(builder: (context, game, child) {
       return Scaffold(
+        backgroundColor: Color(0xFFB9BAA3),
         appBar: AppBar(
-          title: Text(game.quizItems[game.item.quizIndex].title),
+        backgroundColor: Color(0xFF003049),
+        title: Text(
+          game.quizItems[game.item.quizIndex].title,
+          style: TextStyle(
+            color: Color(0xFFD6D5C9),
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        elevation: 4,
+      ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("stage"),
-                Row(children: [
-                  for (int i = 0; i < 10; i++)
-                    Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: Transform(
-                        transform: Matrix4.skewX(-0.3),
-                        child: Container(
-                            width: 20,
-                            height: 15,
-                            color: Colors.amber), //game.getQuizColor(i)),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("stage:",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Row(
+                          children: [
+                            for (int i = 0; i < 10; i++)
+                              Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: Transform(
+                                  transform: Matrix4.skewX(-0.3),
+                                  child: Container(
+                                      width: 20,
+                                      height: 15,
+                                      color: game.getQuizColor(i)
+                                  )
+                                )
+                              ),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                      width: 100,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xFFD6D5C9),
+                      ),
+                      child: Center(
+                        child: Text('힌트: ${game.hintCount}'),
                       ),
                     ),
-                  SizedBox(width: 20),
-                  Container(
-                    width: 100,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color(0xFFD6D5C9),
-                    ),
-                    child: Center(
-                      child: Text('힌트 ${game.hintCount}/3'),
-                    ),
-                  )
-                ]),
+                  ]
+                ),
                 SizedBox(height: 10),
-                Text('문제'),
+                Text('문제',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Container(
                   width: double.infinity,
                   height: 120,
@@ -73,7 +97,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         color: Color(0xffd6d5c9)),
                     child: Center(child: const Text('그림영역'))),
                 SizedBox(height: 10),
-                Text('풀이'),
+                Text('풀이',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Expanded(
                     child: Container(
                         width: double.infinity,
@@ -130,7 +155,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              /*
+                              
                               game.quizItems[game.quizIndex].status =
                                   _answerController.text ==
                                           game.quizItems[game.quizIndex].answer
@@ -141,7 +166,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               _answerController.text = "";
                               game.quizItems[game.quizIndex].status =
                                   QuizStatus.solving;
-                                  */
+                                  
 
                               if (game.quizIndex == 2 || game.quizIndex == 6) {
                                 Navigator.push(

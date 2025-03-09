@@ -102,22 +102,22 @@ class GameProvider extends ChangeNotifier {
   int get totalPoint => _item.totalPoint;
   List<Quiz> get quizItems => _item.quizList;
 
-/*
-  MaterialColor getQuizColor(int index) {
+
+  Color getQuizColor(int index) {
     QuizStatus status = _item.quizList[index].status;
 
     switch (status) {
       case QuizStatus.correct:
-        return Colors.green;
+        return Color(0xff003049);
       case QuizStatus.incorrect:
-        return Colors.red;
+        return Color(0xffa22c29);
       case QuizStatus.solving:
-        return Colors.amber;
+        return Color(0xffffc300);
       case QuizStatus.pending:
-        return Colors.grey;
+        return Color(0xffd6d5c9);
     }
   }
-*/
+
   void increaseQuizIndex() {
     _item.quizIndex++;
     notifyListeners();

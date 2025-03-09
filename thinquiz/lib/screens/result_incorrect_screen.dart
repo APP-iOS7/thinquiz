@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './solution_screen.dart';
-import './memo_screen.dart';
 
 class ResultScreenCorrect extends StatelessWidget {
   const ResultScreenCorrect({super.key});

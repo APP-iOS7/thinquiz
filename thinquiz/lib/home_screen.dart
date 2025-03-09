@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:thinquiz/providers/game_provider.dart';
+import 'package:thinquiz/screens/quiz_screen.dart';
 
 import 'models/game.dart';
 import 'quiz_list_screen.dart';
@@ -41,7 +44,7 @@ class MainScreen extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Text('오류 발생: ${snapshot.error}');
                     }
-
+      
                     /* 진행중인 게임이 없을 때 */
                     else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Column(
@@ -63,14 +66,14 @@ class MainScreen extends StatelessWidget {
                             ),
                             child: const Text(
                               '''
-🔍 당신의 지혜와 운을 시험해보세요!
+      🔍 당신의 지혜와 운을 시험해보세요!
                                 
-이 앱은 단순한 퀴즈 게임이 아닙니다.
-10개의 문제를 풀면서 
-당신의 지식과 직감을 시험해 보세요!
-하지만 조심하세요… 
-게임 중 뜻밖의 기회(?)가 찾아올지도?
-마지막까지 도전할 준비가 되었나요? 🎲✨
+      이 앱은 단순한 퀴즈 게임이 아닙니다.
+      10개의 문제를 풀면서 
+      당신의 지식과 직감을 시험해 보세요!
+      하지만 조심하세요… 
+      게임 중 뜻밖의 기회(?)가 찾아올지도?
+      마지막까지 도전할 준비가 되었나요? 🎲✨
                   ''',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -106,7 +109,7 @@ class MainScreen extends StatelessWidget {
                         ],
                       );
                     }
-
+      
                     /* 진행중인 게임이 있을 때 */
                     else {
                       return Column(
@@ -141,7 +144,12 @@ class MainScreen extends StatelessWidget {
                             height: 100,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => QuizScreen()));
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
                               foregroundColor: Color(0xFFD6D5C9),

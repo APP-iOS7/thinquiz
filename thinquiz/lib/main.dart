@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:thinquiz/models/quiz.dart';
+import 'package:thinquiz/providers/game_provider.dart';
 
 import 'home_screen.dart';
 import 'models/game.dart';
-import 'models/quiz.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,14 +59,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: MainScreen(
-        gameData: Future.value(_gameData),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GameProvider())
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: MainScreen(
+          gameData: Future.value(_gameData),
+        ),
       ),
     );
   }
