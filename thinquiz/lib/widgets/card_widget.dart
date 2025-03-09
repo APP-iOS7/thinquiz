@@ -53,12 +53,15 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                 width: 250,
                 height: 200,
                 child: Container(
-                  color: widget.items[selectedCard!].type == CardType.chance
-                      ? Colors.blue
-                      : Colors.red,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: widget.items[selectedCard!].type == CardType.chance
+                      ? Color(0xff669bbc)
+                      : Color(0xffa22c29)
+                  ),
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 10.0, left: 8.0, right: 8.0),
+                        const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
                     child: Center(
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +110,7 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                       onTap: () => _selectedCard(index),
                       child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: Color(0xffd6d9c5),
                               borderRadius: BorderRadius.circular(5))),
                     );
                   }),

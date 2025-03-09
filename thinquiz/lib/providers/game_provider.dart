@@ -114,7 +114,7 @@ class GameProvider extends ChangeNotifier {
       case QuizStatus.solving:
         return Color(0xffffc300);
       case QuizStatus.pending:
-        return Color(0xffd6d5c9);
+        return Color(0xffd6d9c5);
     }
   }
 

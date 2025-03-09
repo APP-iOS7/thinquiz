@@ -68,7 +68,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFD6D5C9),
+                        color: Color(0xffd6d9c5),
                       ),
                       child: Center(
                         child: Text('힌트: ${game.hintCount}'),
@@ -84,7 +84,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   height: 120,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Color(0xFFD6D5C9)),
+                      color: Color(0xffd6d9c5)),
                   child: Center(
                       child: Text(game.quizItems[game.item.quizIndex].content)),
                 ),
@@ -94,7 +94,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     height: 300,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: Color(0xffd6d5c9)),
+                        color: Color(0xffd6d9c5)),
                     child: Center(child: const Text('그림영역'))),
                 SizedBox(height: 10),
                 Text('풀이',
@@ -104,7 +104,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(0xffd6d5c9)),
+                            color: Color(0xffd6d9c5)),
                         child: Padding(
                           padding: const EdgeInsets.all(6),
                           child: Center(
@@ -127,7 +127,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     Expanded(
                         child: TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFD6D5C9)),
+                                backgroundColor: Color(0xffd6d9c5)),
                             onPressed: () {},
                             child: const Text('메모',
                                 style: TextStyle(color: Colors.black)))),
@@ -135,7 +135,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     Expanded(
                         child: TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFD6D5C9)),
+                                backgroundColor: Color(0xffd6d9c5)),
                             onPressed: () {},
                             child: const Text('힌트',
                                 style: TextStyle(color: Colors.black)))),
@@ -143,7 +143,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     Expanded(
                         child: TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xFFD6D5C9)),
+                                backgroundColor: Color(0xffd6d9c5)),
                             onPressed: () {
                               game.increaseQuizIndex();
                             },
@@ -153,7 +153,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     Expanded(
                         child: TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Color(0xffd6d5c9)),
+                                backgroundColor: Color(0xffd6d9c5)),
                             onPressed: () {
                               
                               game.quizItems[game.quizIndex].status =
