@@ -102,7 +102,6 @@ class GameProvider extends ChangeNotifier {
   int get totalPoint => _item.totalPoint;
   List<Quiz> get quizItems => _item.quizList;
 
-
   Color getQuizColor(int index) {
     QuizStatus status = _item.quizList[index].status;
 
@@ -120,6 +119,11 @@ class GameProvider extends ChangeNotifier {
 
   void increaseQuizIndex() {
     _item.quizIndex++;
+    notifyListeners();
+  }
+
+  void increaseHint() {
+    _item.hintCount++;
     notifyListeners();
   }
 }

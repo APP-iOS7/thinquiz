@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:thinquiz/providers/game_provider.dart';
 import 'package:thinquiz/screens/quiz_screen.dart';
 
 import 'models/game.dart';

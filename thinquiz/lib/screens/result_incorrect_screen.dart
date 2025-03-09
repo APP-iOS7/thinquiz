@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/managers/lucky_card_manager.dart';
+import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/providers/game_provider.dart';
+import 'package:thinquiz/screens/lucky_card_screen.dart';
 import './solution_screen.dart';
 
 class ResultScreenCorrect extends StatelessWidget {
@@ -49,7 +52,11 @@ class ResultScreenCorrect extends StatelessWidget {
                         children: [
                           Text('획득한 점수', style: TextStyle(fontSize: 20)),
                           Expanded(child: SizedBox(width: double.infinity)),
-                          Text('${game.quizItems[game.quizIndex].point}',
+                          Text(
+                              LuckyCardManager().currentCard?.efftect ==
+                                      CardEffect.morePoints
+                                  ? '${game.quizItems[game.quizIndex].point * 2}(${game.quizItems[game.quizIndex].point}X2)'
+                                  : '${game.quizItems[game.quizIndex].point}',
                               style: TextStyle(
                                   fontSize: 48, fontWeight: FontWeight.bold)),
                         ],
@@ -104,7 +111,19 @@ class ResultScreenCorrect extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                // TODO: '다음문제' 버튼 클릭 시 동작
+                                LuckyCardManager().currentCard = null;
+
+                                // 3,7 스테이지 (행운카드 뽑기)
+                                if (game.quizIndex == 2 ||
+                                    game.quizIndex == 6) {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              LuckyCardScreen()));
+                                } else {
+                                  Navigator.pop(context);
+                                }
                               },
                               child: Container(
                                 height: 50, // 버튼 높이

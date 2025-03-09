@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/managers/lucky_card_manager.dart';
+import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/screens/lucky_card_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -14,6 +15,18 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   final TextEditingController _answerController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (LuckyCardManager().currentCard?.efftect == CardEffect.moreHint) {
+        Provider.of<GameProvider>(context, listen: false).increaseHint();
+        LuckyCardManager().currentCard = null;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +65,18 @@ class _QuizScreenState extends State<QuizScreen> {
                                 child: Transform(
                                     transform: Matrix4.skewX(-0.3),
                                     child: Container(
-                                        width: 20,
-                                        height: 15,
-                                        color: game.getQuizColor(i)))),
+                                      width: 20,
+                                      height: 20,
+                                      color: game.getQuizColor(i),
+                                      child: Center(
+                                        child: Text(
+                                          '${i + 1}',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ))),
                         ],
                       )
                     ],
@@ -139,7 +161,16 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              game.increaseQuizIndex();
+                              game.quizItems[game.quizIndex].status =
+                                  QuizStatus.pending;
+
+                              if (LuckyCardManager().currentCard?.efftect ==
+                                  CardEffect.passOK) {
+                                LuckyCardManager().currentCard = null;
+                                handleCorrectAnswer(game);
+                              }
+
+                              initStage(game);
                             },
                             child: const Text('패스',
                                 style: TextStyle(color: Colors.black)))),
@@ -149,38 +180,16 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              game.quizItems[game.quizIndex].status =
-                                  _answerController.text ==
-                                          game.quizItems[game.quizIndex].answer
-                                      ? QuizStatus.correct
-                                      : QuizStatus.incorrect;
-
+                              // 정답
                               if (_answerController.text ==
                                   game.quizItems[game.quizIndex].answer) {
-                                game.quizItems[game.quizIndex].status =
-                                    QuizStatus.correct;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ResultScreenCorrect()));
+                                handleCorrectAnswer(game);
                               } else {
-                                game.quizItems[game.quizIndex].status =
-                                    QuizStatus.incorrect;
+                                // 오답
+                                handleWrongAnswer(game);
                               }
 
-                              game.increaseQuizIndex();
-                              _answerController.text = "";
-                              game.quizItems[game.quizIndex].status =
-                                  QuizStatus.solving;
-
-                              if (game.quizIndex == 2 || game.quizIndex == 6) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            LuckyCardScreen()));
-                              }
+                              initStage(game);
                             },
                             child: const Text('제출',
                                 style: TextStyle(color: Colors.black)))),
@@ -192,5 +201,29 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       );
     });
+  }
+
+  void initStage(GameProvider gameProvider) {
+    gameProvider.increaseQuizIndex();
+    _answerController.text = "";
+    gameProvider.quizItems[gameProvider.quizIndex].status = QuizStatus.solving;
+  }
+
+  void handleCorrectAnswer(GameProvider game) {
+    game.quizItems[game.quizIndex].status = QuizStatus.correct;
+
+    // 행운카드 - 보너스 점수
+    if (LuckyCardManager().currentCard?.efftect == CardEffect.morePoints) {
+      game.item.totalPoint += game.quizItems[game.quizIndex].point * 2;
+    } else {
+      game.item.totalPoint += game.quizItems[game.quizIndex].point;
+    }
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
+  }
+
+  void handleWrongAnswer(GameProvider game) {
+    game.quizItems[game.quizIndex].status = QuizStatus.incorrect;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/lucky_card.dart';
+import 'package:thinquiz/screens/quiz_screen.dart';
 
 class CardWidget extends StatefulWidget {
   final List<LuckyCard> items = LuckyCardManager().shuffledItems;
@@ -36,11 +37,10 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
     if (selectedCard != null || isSelectionComplete) return;
 
     LuckyCardManager().currentCard = widget.items[index];
-    
+
     setState(() {
       selectedCard = index;
       isSelectionComplete = true;
-      
     });
   }
 
@@ -54,14 +54,13 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                 height: 200,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: widget.items[selectedCard!].type == CardType.chance
-                      ? Color(0xff669bbc)
-                      : Color(0xffa22c29)
-                  ),
+                      borderRadius: BorderRadius.circular(5),
+                      color: widget.items[selectedCard!].type == CardType.chance
+                          ? Color(0xff669bbc)
+                          : Color(0xffa22c29)),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 10.0, right: 10.0),
                     child: Center(
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +82,11 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                             style: TextButton.styleFrom(
                                 splashFactory: NoSplash.splashFactory),
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.pushAndRemoveUntil(
+                                  context, 
+                                  MaterialPageRoute(builder: (context) => QuizScreen()), 
+                                  (route) => false
+                              );
                             },
                             child: Center(
                                 child: const Text('확인',
