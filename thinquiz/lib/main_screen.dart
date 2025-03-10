@@ -94,6 +94,7 @@ class _MainScreenState extends State<MainScreen> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
+                                fontWeight: FontWeight.w500,
                                 height: 1.4,
                               ),
                             ),
@@ -101,53 +102,57 @@ class _MainScreenState extends State<MainScreen> {
                           const SizedBox(
                             height: 50,
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final storageService = GameStorageService();
-                              final gameProvider = Provider.of<GameProvider>(
-                                  context,
-                                  listen: false);
-                              final Game defaultGameData = gameProvider.item;
-                              await storageService.saveGame(defaultGameData);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => QuizScreen(),
-                                    settings:
-                                        RouteSettings(name: 'quiz_screen')),
-                              ).then((_) async {
-                                final gameProvider = Provider.of<GameProvider>(
+                          SizedBox(
+                              width: double.infinity, // 화면 너비와 동일하게 설정
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  final storageService = GameStorageService();
+                                  final gameProvider =
+                                      Provider.of<GameProvider>(context,
+                                          listen: false);
+                                  final Game defaultGameData =
+                                      gameProvider.item;
+                                  await storageService
+                                      .saveGame(defaultGameData);
+                                  Navigator.push(
                                     context,
-                                    listen: false);
-                                final storageService = GameStorageService();
-                                await storageService
-                                    .saveGame(gameProvider.item);
-                                setState(() {
-                                  _gameData = GameStorageService()
-                                      .loadGame()
-                                      .then(
-                                          (game) => game == null ? [] : [game]);
-                                });
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFA22C29),
-                              foregroundColor: Color(0xFFD6D5C9),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 14,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 4,
-                            ),
-                            child: const Text('시작 하기',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ),
+                                    MaterialPageRoute(
+                                        builder: (context) => QuizScreen(),
+                                        settings:
+                                            RouteSettings(name: 'quiz_screen')),
+                                  ).then((_) async {
+                                    final gameProvider =
+                                        Provider.of<GameProvider>(context,
+                                            listen: false);
+                                    final storageService = GameStorageService();
+                                    await storageService
+                                        .saveGame(gameProvider.item);
+                                    setState(() {
+                                      _gameData = GameStorageService()
+                                          .loadGame()
+                                          .then((game) =>
+                                              game == null ? [] : [game]);
+                                    });
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFA22C29),
+                                  foregroundColor: Color(0xFFD6D5C9),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 18,
+                                    vertical: 14,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  elevation: 4,
+                                ),
+                                child: const Text('시작 하기',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              )),
                         ],
                       );
                     }
