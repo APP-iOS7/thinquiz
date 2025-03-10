@@ -1,3 +1,5 @@
+// 정답화면
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/managers/lucky_card_manager.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'quiz_solution_screen.dart';
 import 'models/game.dart';
+import 'quiz_solution_screen.dart';
 
 class QuizListScreen extends StatelessWidget {
   final Future<List<Game>> _gameData;
@@ -46,10 +46,12 @@ class QuizListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final quiz = allQuizzes[index];
                     // TODO: 나중에 status 이름 변경 시 수정 필요
-                    final isCorrect = quiz.status == 'correct';
-
+                    final isCorrect =
+                        quiz.status.toString().split('.').last == 'correct';
+                    print(quiz.status.toString().split('.').last);
+                    print(quiz.status.toString());
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 2),
                       child: Card(
                         elevation: 3,
                         shape: RoundedRectangleBorder(
