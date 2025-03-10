@@ -114,6 +114,7 @@ class ResultScreenCorrect extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 LuckyCardManager().currentCard = null;
+
                                 game.increaseQuizIndex();
 
                                 // 3,7 스테이지 (행운카드 뽑기)
