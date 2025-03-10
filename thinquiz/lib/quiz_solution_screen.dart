@@ -64,24 +64,31 @@ class QuizSolutionScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Text('문제 : ${snapshot.data!.title}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          child: Column(
+                            children: [
+                              Text('문제 : ${snapshot.data!.title}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              if (snapshot.data!.quizImage.isNotEmpty ||
+                                  snapshot.data!.quizImage != '')
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              Image.asset(
+                                snapshot.data!.quizImage,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Text('');
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
-                          height: 5,
+                          height: 20,
                         ),
-                        if (snapshot.data!.quizImage.isNotEmpty ||
-                            snapshot.data!.quizImage != null)
-                          Image.asset(
-                            snapshot.data!.quizImage,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Text('');
-                            },
-                          ),
                         Container(
                           width: MediaQuery.of(context).size.width *
                               0.9, // 화면 너비의 90%로 설정
@@ -108,7 +115,7 @@ class QuizSolutionScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width *

@@ -96,21 +96,3 @@ lib/generated_plugin_registrant.dart
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter
 
 .DS_Store
-
-### Xcode ###
-## User settings
-xcuserdata/
-
-## Xcode 8 and earlier
-*.xcscmblueprint
-*.xccheckout
-
-### Xcode Patch ###
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-/*.gcno
-**/xcshareddata/WorkspaceSettings.xcsettings
-
