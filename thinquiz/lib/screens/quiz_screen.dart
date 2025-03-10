@@ -146,15 +146,22 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              if (game.hintCount <= 0 
-                                  && !game.quizItems[game.quizIndex].isHintOpen) {
+                              if (LuckyCardManager().currentCard?.efftect ==
+                                  CardEffect.noHint) {
+                                _showAlertDialog(context, "힌트를 사용할 수 없습니다.");
+                                return;
+                              }
+
+                              if (game.hintCount <= 0 &&
+                                  !game.quizItems[game.quizIndex].isHintOpen) {
                                 _showAlertDialog(context, "남은 힌트가 없습니다.");
                               } else {
-                                if (!game.quizItems[game.quizIndex].isHintOpen) {
+                                if (!game
+                                    .quizItems[game.quizIndex].isHintOpen) {
                                   game.decreaseHint();
                                   game.quizItems[game.quizIndex].isHintOpen =
                                       true;
-                                } 
+                                }
 
                                 _showAlertDialog(context,
                                     game.quizItems[game.quizIndex].hint);
@@ -168,9 +175,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              game.quizItems[game.quizIndex].status =
-                                  QuizStatus.pending;
-
                               if (LuckyCardManager().currentCard?.efftect ==
                                   CardEffect.passOK) {
                                 LuckyCardManager().currentCard = null;
@@ -178,18 +182,18 @@ class _QuizScreenState extends State<QuizScreen> {
                               } else {
                                 game.quizItems[game.quizIndex].status =
                                     QuizStatus.incorrect;
-                              }
+                                game.increaseQuizIndex();
+                                _initStage();
 
-                              game.increaseQuizIndex();
-                              _initStage();
-
-                              // 3,7 스테이지 (행운카드 뽑기)
-                              if (game.quizIndex == 2 || game.quizIndex == 6) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            LuckyCardScreen()));
+                                // 3,7 스테이지 (행운카드 뽑기)
+                                if (game.quizIndex == 2 ||
+                                    game.quizIndex == 6) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              LuckyCardScreen()));
+                                }
                               }
                             },
                             child: const Text('패스',
