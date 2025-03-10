@@ -4,6 +4,7 @@ import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
+import 'package:thinquiz/screens/lucky_card_screen.dart';
 import 'package:thinquiz/screens/memo_screen.dart';
 import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
@@ -17,18 +18,6 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   final TextEditingController _answerController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (LuckyCardManager().currentCard?.efftect == CardEffect.moreHint) {
-        Provider.of<GameProvider>(context, listen: false).increaseHint();
-        LuckyCardManager().currentCard = null;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +146,19 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
-                              _showAlertDialog(context);
+                              if (game.hintCount <= 0 
+                                  && !game.quizItems[game.quizIndex].isHintOpen) {
+                                _showAlertDialog(context, "남은 힌트가 없습니다.");
+                              } else {
+                                if (!game.quizItems[game.quizIndex].isHintOpen) {
+                                  game.decreaseHint();
+                                  game.quizItems[game.quizIndex].isHintOpen =
+                                      true;
+                                } 
+
+                                _showAlertDialog(context,
+                                    game.quizItems[game.quizIndex].hint);
+                              }
                             },
                             child: const Text('힌트',
                                 style: TextStyle(color: Colors.black)))),
@@ -174,9 +175,22 @@ class _QuizScreenState extends State<QuizScreen> {
                                   CardEffect.passOK) {
                                 LuckyCardManager().currentCard = null;
                                 _handleCorrectAnswer(game);
+                              } else {
+                                game.quizItems[game.quizIndex].status =
+                                    QuizStatus.incorrect;
                               }
 
-                              _initStage(game);
+                              game.increaseQuizIndex();
+                              _initStage();
+
+                              // 3,7 스테이지 (행운카드 뽑기)
+                              if (game.quizIndex == 2 || game.quizIndex == 6) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LuckyCardScreen()));
+                              }
                             },
                             child: const Text('패스',
                                 style: TextStyle(color: Colors.black)))),
@@ -207,10 +221,8 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-  void _initStage(GameProvider gameProvider) {
-    gameProvider.increaseQuizIndex();
+  void _initStage() {
     _answerController.text = "";
-    gameProvider.quizItems[gameProvider.quizIndex].status = QuizStatus.solving;
   }
 
   void _handleCorrectAnswer(GameProvider game) {
@@ -223,7 +235,7 @@ class _QuizScreenState extends State<QuizScreen> {
       game.item.totalPoint += game.quizItems[game.quizIndex].point;
     }
 
-    _initStage(game);
+    _initStage();
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
@@ -259,25 +271,21 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context, String alertText) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Consumer<GameProvider>(
-          builder: (context, game, child) {
-            return AlertDialog(
-              title: Text('힌트'),
-              content: Text(game.quizItems[game.quizIndex].hint),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Dialog 닫기
-                  },
-                  child: Text('확인'),
-                ),
-              ],
-            );
-          }
+        return AlertDialog(
+          title: Text('힌트'),
+          content: Text(alertText),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dialog 닫기
+              },
+              child: Text('확인'),
+            ),
+          ],
         );
       },
     );

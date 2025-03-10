@@ -146,7 +146,8 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => QuizScreen()));
+                                      builder: (context) => QuizScreen(),
+                                      settings: RouteSettings(name: "quiz_screen")));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
