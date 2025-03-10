@@ -112,7 +112,15 @@ class _QuizScreenState extends State<QuizScreen> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Color(0xffd6d5c9)),
-                    child: Center(child: const Text('그림영역'))),
+                    child: Center(
+                      child: Image.asset(
+                        game.quizItems[game.item.quizIndex].quizImage,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Text('');
+                        },
+                      ),
+                    )),
                 SizedBox(height: 10),
                 Text('풀이', style: TextStyle(fontWeight: FontWeight.bold)),
                 Expanded(
