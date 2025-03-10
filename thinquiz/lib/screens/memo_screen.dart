@@ -68,16 +68,24 @@ class _DrawingScreenState extends State<DrawingScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent, // Scaffold 배경 투명
       appBar: AppBar(
-        //backgroundColor: Colors.transparent, // AppBar를 투명하게 설정
+        backgroundColor: Color(0xff003049), // AppBar를 투명하게 설정
         //elevation: 0, // 그림자 제거
-        title: const Text('메모장'),
+        title: const Text(
+          '메모장',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ), // 텍스트 색상 설정
+        ),
         leading: IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: _clearDrawing,
+          color: Colors.white,
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.close),
+            color: Colors.white,
             onPressed: () {
               Navigator.of(context).pop(); // 닫기
             },
