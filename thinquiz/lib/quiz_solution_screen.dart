@@ -22,6 +22,9 @@ class QuizSolutionScreen extends StatelessWidget {
       backgroundColor: Color(0xFFB9BAA3),
       appBar: AppBar(
         backgroundColor: Color(0xFF003049),
+        iconTheme: IconThemeData(
+          color: Color(0xFFD6D5C9), // 백버튼 색상 변경
+        ),
         title: const Text(
           '문제 해설',
           style: TextStyle(
@@ -65,10 +68,12 @@ class QuizSolutionScreen extends StatelessWidget {
                             ],
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('문제 : ${snapshot.data!.title}',
+                              Text('<${snapshot.data!.title}>',
                                   style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   )),
                               if (snapshot.data!.quizImage.isNotEmpty ||
@@ -108,7 +113,7 @@ class QuizSolutionScreen extends StatelessWidget {
                           child: Text(
                             '정답 : ${snapshot.data!.answer}',
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.right,
@@ -136,7 +141,7 @@ class QuizSolutionScreen extends StatelessWidget {
                           child: Text(
                             '해설 : ${snapshot.data!.solution}',
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.left,

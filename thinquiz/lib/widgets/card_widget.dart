@@ -63,6 +63,14 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
                         color:
                             widget.items[selectedCard!].type == CardType.chance
                                 ? Color(0xff669bbc)

@@ -15,6 +15,9 @@ class QuizListScreen extends StatelessWidget {
       backgroundColor: Color(0xFFB9BAA3),
       appBar: AppBar(
         backgroundColor: Color(0xFF003049),
+        iconTheme: IconThemeData(
+          color: Color(0xFFD6D5C9), // 백버튼 색상 변경
+        ),
         title: const Text(
           '문제 리스트',
           style: TextStyle(
@@ -63,7 +66,8 @@ class QuizListScreen extends StatelessWidget {
                             vertical: 4,
                             horizontal: 16,
                           ),
-                          title: Text(quiz.title),
+                          title: Text(quiz.title,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           subtitle: Text(
                             isCorrect
                                 ? '정답 : ${quiz.answer}'
