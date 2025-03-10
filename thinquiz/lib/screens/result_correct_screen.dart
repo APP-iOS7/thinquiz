@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ResultScreenIncorrect extends StatelessWidget {
+  const ResultScreenIncorrect({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +37,28 @@ class MyApp extends StatelessWidget {
                     SizedBox(height: 40),
                     Text('다시 한번 들여다 보고\n정확한 답을 제출해줘.',
                         style: TextStyle(color: Colors.black, fontSize: 24)),
+                    SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 50, // 버튼 높이
+                        decoration: BoxDecoration(
+                          color: Color(0xFFB9BAA3), // 버튼 배경색
+                          borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                        ),
+                        child: Center(
+                          child: Text(
+                            '돌아가기',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

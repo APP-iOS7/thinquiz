@@ -4,6 +4,8 @@ import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
+import 'package:thinquiz/screens/memo_screen.dart';
+import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -144,7 +146,9 @@ class _QuizScreenState extends State<QuizScreen> {
                         child: TextButton(
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showMemoScreen(context);
+                            },
                             child: const Text('메모',
                                 style: TextStyle(color: Colors.black)))),
                     SizedBox(width: 10),
@@ -152,7 +156,9 @@ class _QuizScreenState extends State<QuizScreen> {
                         child: TextButton(
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showAlertDialog(context);
+                            },
                             child: const Text('힌트',
                                 style: TextStyle(color: Colors.black)))),
                     SizedBox(width: 10),
@@ -167,10 +173,10 @@ class _QuizScreenState extends State<QuizScreen> {
                               if (LuckyCardManager().currentCard?.efftect ==
                                   CardEffect.passOK) {
                                 LuckyCardManager().currentCard = null;
-                                handleCorrectAnswer(game);
+                                _handleCorrectAnswer(game);
                               }
 
-                              initStage(game);
+                              _initStage(game);
                             },
                             child: const Text('패스',
                                 style: TextStyle(color: Colors.black)))),
@@ -183,13 +189,11 @@ class _QuizScreenState extends State<QuizScreen> {
                               // 정답
                               if (_answerController.text ==
                                   game.quizItems[game.quizIndex].answer) {
-                                handleCorrectAnswer(game);
+                                _handleCorrectAnswer(game);
                               } else {
                                 // 오답
-                                handleWrongAnswer(game);
+                                _handleWrongAnswer(game);
                               }
-
-                              initStage(game);
                             },
                             child: const Text('제출',
                                 style: TextStyle(color: Colors.black)))),
@@ -203,13 +207,13 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-  void initStage(GameProvider gameProvider) {
+  void _initStage(GameProvider gameProvider) {
     gameProvider.increaseQuizIndex();
     _answerController.text = "";
     gameProvider.quizItems[gameProvider.quizIndex].status = QuizStatus.solving;
   }
 
-  void handleCorrectAnswer(GameProvider game) {
+  void _handleCorrectAnswer(GameProvider game) {
     game.quizItems[game.quizIndex].status = QuizStatus.correct;
 
     // 행운카드 - 보너스 점수
@@ -219,11 +223,63 @@ class _QuizScreenState extends State<QuizScreen> {
       game.item.totalPoint += game.quizItems[game.quizIndex].point;
     }
 
+    _initStage(game);
+
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
   }
 
-  void handleWrongAnswer(GameProvider game) {
+  void _handleWrongAnswer(GameProvider game) {
     game.quizItems[game.quizIndex].status = QuizStatus.incorrect;
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ResultScreenIncorrect()));
+  }
+
+  void _showMemoScreen(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // 전체 화면 차지 방지
+      barrierColor: Colors.transparent, // 바깥 영역도 투명하게 설정
+      backgroundColor: Colors.transparent, // BottomSheet 배경 투명
+      shape: const RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(16)), // 둥근 모서리 추가
+      ),
+      builder: (context) {
+        double screenHeight = MediaQuery.of(context).size.height;
+        double bottomSheetHeight =
+            screenHeight - kToolbarHeight; // 전체 높이 - AppBar 높이
+
+        return SizedBox(
+          height: bottomSheetHeight,
+          child: const DrawingScreen(),
+        );
+      },
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Consumer<GameProvider>(
+          builder: (context, game, child) {
+            return AlertDialog(
+              title: Text('힌트'),
+              content: Text(game.quizItems[game.quizIndex].hint),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Dialog 닫기
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          }
+        );
+      },
+    );
   }
 }
