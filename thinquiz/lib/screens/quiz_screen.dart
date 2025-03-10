@@ -8,6 +8,9 @@ import 'package:thinquiz/screens/lucky_card_screen.dart';
 import 'package:thinquiz/screens/memo_screen.dart';
 import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
+import 'package:thinquiz/services/game_storage_service.dart';
+
+import 'complete_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -21,7 +24,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _loadSavedGame()이 비동기로 실행되므로 데이터가 로드되기 전에 UI가 먼저 빌드 되어오류 발생 여지가 있음.
     return Consumer<GameProvider>(builder: (context, game, child) {
+      if (game.quizItems.isEmpty) {
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
       return Scaffold(
         backgroundColor: Color(0xFFB9BAA3),
         appBar: AppBar(
@@ -58,7 +69,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                     child: Container(
                                       width: 20,
                                       height: 20,
-                                      color: game.getQuizColor(i),
+                                      color: i == game.quizIndex
+                                          ? Color(0xffffc300)
+                                          : game.getQuizColor(i),
                                       child: Center(
                                         child: Text(
                                           '${i + 1}',
@@ -103,7 +116,15 @@ class _QuizScreenState extends State<QuizScreen> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Color(0xffd6d5c9)),
-                    child: Center(child: const Text('그림영역'))),
+                    child: Center(
+                      child: Image.asset(
+                        game.quizItems[game.item.quizIndex].quizImage,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Text('');
+                        },
+                      ),
+                    )),
                 SizedBox(height: 10),
                 Text('풀이', style: TextStyle(fontWeight: FontWeight.bold)),
                 Expanded(
@@ -185,15 +206,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 game.increaseQuizIndex();
                                 _initStage();
 
-                                // 3,7 스테이지 (행운카드 뽑기)
-                                if (game.quizIndex == 2 ||
-                                    game.quizIndex == 6) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LuckyCardScreen()));
-                                }
+                                game.drawLuckyCard(context);
                               }
                             },
                             child: const Text('패스',
@@ -229,7 +242,7 @@ class _QuizScreenState extends State<QuizScreen> {
     _answerController.text = "";
   }
 
-  void _handleCorrectAnswer(GameProvider game) {
+  void _handleCorrectAnswer(GameProvider game) async {
     game.quizItems[game.quizIndex].status = QuizStatus.correct;
 
     // 행운카드 - 보너스 점수
@@ -240,14 +253,23 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     _initStage();
-
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
+    await GameStorageService().saveGame(game.item);
+    if (game.quizIndex == 9) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => QuestCompletedScreen(
+                    totalPoint: game.item.totalPoint,
+                  )));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
+    }
   }
 
-  void _handleWrongAnswer(GameProvider game) {
+  void _handleWrongAnswer(GameProvider game) async {
     game.quizItems[game.quizIndex].status = QuizStatus.incorrect;
-
+    await GameStorageService().saveGame(game.item);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenIncorrect()));
   }
@@ -262,6 +284,7 @@ class _QuizScreenState extends State<QuizScreen> {
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(16)), // 둥근 모서리 추가
       ),
+      enableDrag: false,
       builder: (context) {
         double screenHeight = MediaQuery.of(context).size.height;
         double bottomSheetHeight =

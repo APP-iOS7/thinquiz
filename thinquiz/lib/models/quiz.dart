@@ -35,7 +35,7 @@ class Quiz {
   }
 }
 
-enum QuizStatus { correct, incorrect, pending, solving }
+enum QuizStatus { correct, incorrect, pending }
 
 String quizStatusToString(QuizStatus status) {
   return status.toString().split('.').last;

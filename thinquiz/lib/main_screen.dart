@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/managers/lucky_card_manager.dart';
+import 'package:thinquiz/models/lucky_card.dart';
+import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 
-import 'models/game.dart';
+import '../models/game.dart';
 import 'quiz_list_screen.dart';
+
+import '../services/game_storage_service.dart';
 import 'screens/quiz_screen.dart';
-import 'services/game_storage_service.dart';
 
 class MainScreen extends StatefulWidget {
   final Future<List<Game>> _gameData;
@@ -31,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFB9BAA3),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF003049),
         title: const Text(
           'ThinQuiz',
@@ -79,14 +84,14 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             child: const Text(
                               '''
-      🔍 당신의 지혜와 운을 시험해보세요!
+🔍 당신의 지혜와 운을 시험해보세요!
                                 
-      이 앱은 단순한 퀴즈 게임이 아닙니다.
-      10개의 문제를 풀면서 
-      당신의 지식과 직감을 시험해 보세요!
-      하지만 조심하세요… 
-      게임 중 뜻밖의 기회(?)가 찾아올지도?
-      마지막까지 도전할 준비가 되었나요? 🎲✨
+이 앱은 단순한 퀴즈 게임이 아닙니다.
+10개의 문제를 풀면서 
+당신의 지식과 직감을 시험해 보세요!
+하지만 조심하세요… 
+게임 중 뜻밖의 기회(?)가 찾아올지도?
+마지막까지 도전할 준비가 되었나요? 🎲✨
                   ''',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -111,8 +116,15 @@ class _MainScreenState extends State<MainScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => QuizScreen(),
-                                    settings: RouteSettings(name: 'quiz_screen')),
-                              ).then((_) {
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
+                              ).then((_) async {
+                                final gameProvider = Provider.of<GameProvider>(
+                                    context,
+                                    listen: false);
+                                final storageService = GameStorageService();
+                                await storageService
+                                    .saveGame(gameProvider.item);
                                 setState(() {
                                   _gameData = GameStorageService()
                                       .loadGame()
@@ -162,14 +174,30 @@ class _MainScreenState extends State<MainScreen> {
                                     offset: Offset(0, 3),
                                   )
                                 ]),
-                            child: Text(
-                              '진행 상황: ${snapshot.data!.first.totalPoint}점',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF003049),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '진행 상황: ${snapshot.data!.first.quizList.where((quiz) => quiz.status == QuizStatus.correct).length} / 10',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF003049),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  '획득 점수: ${snapshot.data!.first.totalPoint}점',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF003049),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -177,14 +205,29 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              // 미해결 된 문제 index 찾기
+                              final gameProvider = Provider.of<GameProvider>(
+                                  context,
+                                  listen: false);
+                              gameProvider.findFirstUnsolved();
+
+                              // 남아있는 찬스카드 삭제
+                              LuckyCardManager().currentCard = null;
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuizScreen(),
-                                  settings: RouteSettings(name: 'quiz_screen')
-                                ),
+                                    builder: (context) => QuizScreen(),
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
                               ).then(
-                                (_) {
+                                (_) async {
+                                  final gameProvider =
+                                      Provider.of<GameProvider>(context,
+                                          listen: false);
+                                  final storageService = GameStorageService();
+                                  await storageService
+                                      .saveGame(gameProvider.item);
                                   setState(() {
                                     _gameData = GameStorageService()
                                         .loadGame()
