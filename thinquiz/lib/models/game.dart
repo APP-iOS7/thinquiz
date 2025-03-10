@@ -6,7 +6,8 @@ class Game {
   int totalPoint;
   List<Quiz> quizList;
 
-  Game({required this.hintCount,
+  Game(
+      {required this.hintCount,
       required this.quizIndex,
       required this.totalPoint,
       required this.quizList});

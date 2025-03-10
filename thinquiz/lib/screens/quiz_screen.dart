@@ -35,7 +35,9 @@ class _QuizScreenState extends State<QuizScreen> {
                       child: Transform(
                         transform: Matrix4.skewX(-0.3),
                         child: Container(
-                            width: 20, height: 15, color: game.getQuizColor(i)),
+                            width: 20,
+                            height: 15,
+                            color: Colors.amber), //game.getQuizColor(i)),
                       ),
                     ),
                   SizedBox(width: 20),
@@ -47,8 +49,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       color: Color(0xFFD6D5C9),
                     ),
                     child: Center(
-                        child: 
-                        Text('힌트 ${game.hintCount}/3'),
+                      child: Text('힌트 ${game.hintCount}/3'),
                     ),
                   )
                 ]),
@@ -110,8 +111,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         child: TextButton(
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xFFD6D5C9)),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                             child: const Text('힌트',
                                 style: TextStyle(color: Colors.black)))),
                     SizedBox(width: 10),
@@ -130,6 +130,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: TextButton.styleFrom(
                                 backgroundColor: Color(0xffd6d5c9)),
                             onPressed: () {
+                              /*
                               game.quizItems[game.quizIndex].status =
                                   _answerController.text ==
                                           game.quizItems[game.quizIndex].answer
@@ -140,6 +141,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               _answerController.text = "";
                               game.quizItems[game.quizIndex].status =
                                   QuizStatus.solving;
+                                  */
 
                               if (game.quizIndex == 2 || game.quizIndex == 6) {
                                 Navigator.push(
