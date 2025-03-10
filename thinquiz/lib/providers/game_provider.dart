@@ -34,7 +34,7 @@ class GameProvider extends ChangeNotifier {
           solution:
               '그림과 같이 중간에 있는 정사각형을\n45도 회전시켜 보면 간단히 알 수 있다.\n중간 정사각형은 바깥쪽 정사각형의 반.\n안쪽 정사각형은 중간 정사각형의 반이\n되는 것이다. 그러므로 안쪽 정사각형은\n바깥쪽 정사각형의 4분의 1인 것이 된다.',
           status: QuizStatus.pending,
-          quizImage: '002.png',
+          quizImage: 'assets/002.png',
           isHintOpen: false),
       Quiz(
           title: '큰 숫자',
@@ -46,7 +46,7 @@ class GameProvider extends ChangeNotifier {
           solution:
               '가로세로 그리고 대각선(두방향)\n모두가 최대가 되게 하기 위해서는 모든 열에 공통으로 포함되는 위치에 가장 큰 숫자를 넣어야 할 것이다.',
           status: QuizStatus.pending,
-          quizImage: '003.png',
+          quizImage: 'assets/003.png',
           isHintOpen: false),
       Quiz(
           title: '수통의 물',
@@ -105,7 +105,7 @@ class GameProvider extends ChangeNotifier {
           solution:
               '각 부분의 길이가 포인트.\n마름모 부분이 원래 깃발의 16분의 1에 해당하는 면적 2개로 이루어져 있음을 알 수 있다.\n\n즉, 깃발 전체의 8분의 1이 되는 것이다.',
           status: QuizStatus.pending,
-          quizImage: '008.png',
+          quizImage: 'assets/008.png',
           isHintOpen: false),
       Quiz(
           title: '주사위 나열',
@@ -117,7 +117,7 @@ class GameProvider extends ChangeNotifier {
           solution:
               '늘어놓은 주사위의 눈을 상,중,하의 3단으로 나누어 보면 상단의 배열에는 규칙성이 있다.\n주사위 눈에 있는 점의 배열이 1개부터 점점 늘어가는 것이다. ⌜ ? ⌟ 부분에는 6개의 점이 붙어 있어야 하므로 왼쪽의 주사위에 이어서 상단에 점이 세 개 위치하는 눈이 오도록 고르면 된다.',
           status: QuizStatus.pending,
-          quizImage: '009.png',
+          quizImage: 'assets/009.png',
           isHintOpen: false),
       Quiz(
           title: '이어진 선',
@@ -128,7 +128,7 @@ class GameProvider extends ChangeNotifier {
           answer: 'C',
           solution: '입체적 사고가 필요한 수수께끼이다.',
           status: QuizStatus.pending,
-          quizImage: '010.png',
+          quizImage: 'assets/010.png',
           isHintOpen: false)
     ]);
   }
