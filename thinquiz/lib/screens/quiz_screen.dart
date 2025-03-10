@@ -69,7 +69,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     child: Container(
                                       width: 20,
                                       height: 20,
-                                      color: game.getQuizColor(i),
+                                      color: i == game.quizIndex ? Color(0xffffc300) : game.getQuizColor(i),
                                       child: Center(
                                         child: Text(
                                           '${i + 1}',
