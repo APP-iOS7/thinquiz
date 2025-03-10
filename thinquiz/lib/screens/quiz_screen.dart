@@ -22,7 +22,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _loadSavedGame()이 비동기로 실행되므로 데이터가 로드되기 전에 UI가 먼저 빌드 되어오류 발생 여지가 있음.
     return Consumer<GameProvider>(builder: (context, game, child) {
+      if (game.quizItems.isEmpty) {
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
       return Scaffold(
         backgroundColor: Color(0xFFB9BAA3),
         appBar: AppBar(
