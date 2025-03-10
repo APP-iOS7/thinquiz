@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:thinquiz/main_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import '../models/game.dart';
+import '../providers/game_provider.dart';
+import '../services/game_storage_service.dart' show GameStorageService;
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// void main() {
+//   runApp(MyApp());
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Times New Roman', // 고급스러운 느낌의 서체 사용
-        primarySwatch: Colors.blue,
-      ),
-      home: QuestCompletedScreen(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       theme: ThemeData(
+//         fontFamily: 'Times New Roman', // 고급스러운 느낌의 서체 사용
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: QuestCompletedScreen(),
+//     );
+//   }
+// }
 
 class QuestCompletedScreen extends StatelessWidget {
-  const QuestCompletedScreen({super.key});
+  final int totalPoint;
+  const QuestCompletedScreen({super.key, required this.totalPoint});
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,53 @@ class QuestCompletedScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('진행 상황 초기화'),
+                                content: Text('모든 진행 상황이 초기화 됩니다. 계속 하시겠습니까?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: Text('취소'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: Text('초기화'),
+                                  ),
+                                ],
+                              ),
+                            ) ??
+                            // Dialog 외부 터치 시 null을 반환하므로 false로 처리
+                            false;
+                        if (confirmed) {
+                          final gameProvider =
+                              Provider.of<GameProvider>(context, listen: false);
+                          await gameProvider.clearGame();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainScreen(
+                                        gameData: Future.value([]),
+                                      )));
+                        } else {
+                          final GameStorageService _storageService =
+                              GameStorageService();
+
+                          // Game? savedGame = await _storageService.loadGame();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MainScreen(
+                                        gameData: _storageService
+                                            .loadGame()
+                                            .then((game) =>
+                                                game == null ? [] : [game]),
+                                      )));
+                        }
                         // 버튼 클릭 시 실행될 코드
                         print('메인으로 이동');
                       },

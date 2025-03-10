@@ -10,6 +10,8 @@ import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
 import 'package:thinquiz/services/game_storage_service.dart';
 
+import 'complete_screen.dart';
+
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
@@ -67,7 +69,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     child: Container(
                                       width: 20,
                                       height: 20,
-                                      color: game.getQuizColor(i),
+                                      color: i == game.quizIndex ? Color(0xffffc300) : game.getQuizColor(i),
                                       child: Center(
                                         child: Text(
                                           '${i + 1}',
@@ -258,8 +260,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
     _initStage();
     await GameStorageService().saveGame(game.item);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
+    if (game.quizIndex == 9) {
+      Navigator.pushReplacement( context,
+          MaterialPageRoute( builder: (context) => QuestCompletedScreen(
+                    totalPoint: game.item.totalPoint,
+                  )));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
+    }
   }
 
   void _handleWrongAnswer(GameProvider game) async {

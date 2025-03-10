@@ -21,7 +21,7 @@ class GameProvider extends ChangeNotifier {
           answer: '100',
           solution:
               '50개들이 병이 10개이므로\n사탕은 500개.\n이를 20개의 봉투에 나눠 담는 것이므로\n\n평균은 당연히 25개 인것이다.',
-          status: QuizStatus.solving,
+          status: QuizStatus.pending,
           quizImage: '',
           isHintOpen: false),
       Quiz(
@@ -147,8 +147,6 @@ class GameProvider extends ChangeNotifier {
         return Color(0xff003049);
       case QuizStatus.incorrect:
         return Color(0xffa22c29);
-      case QuizStatus.solving:
-        return Color(0xffffc300);
       case QuizStatus.pending:
         return Color(0xffd6d5c9);
     }
@@ -189,6 +187,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   GameProvider() {
+    print('click');
     _loadSavedGame();
   }
 
@@ -197,7 +196,7 @@ class GameProvider extends ChangeNotifier {
     final savedGame = await _storageService.loadGame();
     if (savedGame != null) {
       _item = savedGame;
-      _findFirstUnsolved(); // 첫 미해결 문제 인덱스 찾기
+      findFirstUnsolved(); // 첫 미해결 문제 인덱스 찾기
     } else {
       _initializeNewGame();
     }
@@ -205,13 +204,13 @@ class GameProvider extends ChangeNotifier {
   }
 
   // 첫 미해결 문제 찾기
-  void _findFirstUnsolved() {
+  void findFirstUnsolved() {
     int firstUnsolved =
         _item.quizList.indexWhere((quiz) => quiz.status != QuizStatus.correct);
 
     if (firstUnsolved != -1) {
       _item.quizIndex = firstUnsolved;
-      _item.quizList[firstUnsolved].status = QuizStatus.solving;
+      //_item.quizList[firstUnsolved].status = QuizStatus.solving;
     }
   }
 
@@ -225,7 +224,7 @@ class GameProvider extends ChangeNotifier {
 
     if (nextUnsolved != -1) {
       _item.quizIndex = _item.quizIndex + 1 + nextUnsolved;
-      _item.quizList[_item.quizIndex].status = QuizStatus.solving;
+      //_item.quizList[_item.quizIndex].status = QuizStatus.solving;
       notifyListeners();
     }
   }
@@ -235,8 +234,10 @@ class GameProvider extends ChangeNotifier {
     if (_item.quizList[_item.quizIndex].status == QuizStatus.correct) {
       moveToNextUnsolved();
     } else {
-      _item.quizIndex++;
-      _item.quizList[_item.quizIndex].status = QuizStatus.solving;
+      if (_item.quizIndex < 9) {
+        _item.quizIndex++;
+        //_item.quizList[_item.quizIndex].status = QuizStatus.solving;
+      }
     }
     await saveGameState();
     notifyListeners();
@@ -257,13 +258,13 @@ class GameProvider extends ChangeNotifier {
   void startQuiz(int index) {
     // 이전에 solving 상태인 문제들을 모두 pending으로 변경
     for (var quiz in _item.quizList) {
-      if (quiz.status == QuizStatus.solving) {
-        quiz.status = QuizStatus.pending;
-      }
+      // if (quiz.status == QuizStatus.solving) {
+      //   quiz.status = QuizStatus.pending;
+      // }
     }
     // 현재 선택한 문제를 solving 상태로 변경
     _item.quizIndex = index;
-    _item.quizList[index].status = QuizStatus.solving;
+    //_item.quizList[index].status = QuizStatus.solving;
     notifyListeners();
   }
 }

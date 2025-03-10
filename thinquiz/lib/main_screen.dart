@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFB9BAA3),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF003049),
         title: const Text(
           'ThinQuiz',
@@ -206,6 +207,35 @@ class _MainScreenState extends State<MainScreen> {
                             height: 100,
                           ),
                           Padding(
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => QuizScreen(),
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
+                              ).then(
+                                (_) async {
+                                  final gameProvider =
+                                      Provider.of<GameProvider>(context,
+                                          listen: false);
+                                  gameProvider.findFirstUnsolved();
+                                  final storageService = GameStorageService();
+                                  await storageService
+                                      .saveGame(gameProvider.item);
+                                  setState(() {
+                                    _gameData = GameStorageService()
+                                        .loadGame()
+                                        .then((game) =>
+                                            game == null ? [] : [game]);
+                                  });
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFA22C29),
+                              foregroundColor: Color(0xFFD6D5C9),
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16), // 좌우 16씩 패딩 추가
                               child: SizedBox(
