@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 
 import '../models/game.dart';
@@ -114,7 +115,13 @@ class _MainScreenState extends State<MainScreen> {
                                     builder: (context) => QuizScreen(),
                                     settings:
                                         RouteSettings(name: 'quiz_screen')),
-                              ).then((_) {
+                              ).then((_) async {
+                                final gameProvider = Provider.of<GameProvider>(
+                                    context,
+                                    listen: false);
+                                final storageService = GameStorageService();
+                                await storageService
+                                    .saveGame(gameProvider.item);
                                 setState(() {
                                   _gameData = GameStorageService()
                                       .loadGame()
@@ -167,7 +174,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  '진행 상황: ${snapshot.data!.first.quizIndex} / 10',
+                                  '진행 상황: ${snapshot.data!.first.quizList.where((quiz) => quiz.status == QuizStatus.correct).length} / 10',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xFF003049),
@@ -202,7 +209,13 @@ class _MainScreenState extends State<MainScreen> {
                                     settings:
                                         RouteSettings(name: 'quiz_screen')),
                               ).then(
-                                (_) {
+                                (_) async {
+                                  final gameProvider =
+                                      Provider.of<GameProvider>(context,
+                                          listen: false);
+                                  final storageService = GameStorageService();
+                                  await storageService
+                                      .saveGame(gameProvider.item);
                                   setState(() {
                                     _gameData = GameStorageService()
                                         .loadGame()
