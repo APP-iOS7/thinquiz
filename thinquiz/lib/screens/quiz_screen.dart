@@ -8,6 +8,7 @@ import 'package:thinquiz/screens/lucky_card_screen.dart';
 import 'package:thinquiz/screens/memo_screen.dart';
 import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
+import 'package:thinquiz/services/game_storage_service.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -229,7 +230,7 @@ class _QuizScreenState extends State<QuizScreen> {
     _answerController.text = "";
   }
 
-  void _handleCorrectAnswer(GameProvider game) {
+  void _handleCorrectAnswer(GameProvider game) async {
     game.quizItems[game.quizIndex].status = QuizStatus.correct;
 
     // 행운카드 - 보너스 점수
@@ -240,14 +241,14 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     _initStage();
-
+    await GameStorageService().saveGame(game.item);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
   }
 
-  void _handleWrongAnswer(GameProvider game) {
+  void _handleWrongAnswer(GameProvider game) async {
     game.quizItems[game.quizIndex].status = QuizStatus.incorrect;
-
+    await GameStorageService().saveGame(game.item);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenIncorrect()));
   }
