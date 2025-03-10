@@ -2,6 +2,7 @@ class Quiz {
   String title;
   int point;
   String hint;
+  bool isHintOpen;
   String content;
   String answer;
   String solution;
@@ -12,6 +13,7 @@ class Quiz {
       {required this.title,
       required this.point,
       required this.hint,
+      required this.isHintOpen,
       required this.content,
       required this.answer,
       required this.solution,
@@ -23,6 +25,7 @@ class Quiz {
       title: json['title'] as String,
       point: json['point'] as int,
       hint: json['hint'] as String,
+      isHintOpen: json['isHintOpen'] as bool,
       content: json['content'] as String,
       answer: json['answer'] as String,
       solution: json['solution'] as String,

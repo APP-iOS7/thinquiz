@@ -18,7 +18,7 @@ class LuckyCardManager {
       LuckyCard(
           content: '정답을 맞출 경우 점수를 두배로 획득합니다!',
           type: CardType.chance,
-          efftect: CardEffect.moreHint),
+          efftect: CardEffect.morePoints),
       LuckyCard(
           content: '이번 문제를 패스해도 정답으로 인정됩니다!',
           type: CardType.chance,

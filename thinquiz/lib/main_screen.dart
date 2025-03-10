@@ -79,14 +79,14 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             child: const Text(
                               '''
-🔍 당신의 지혜와 운을 시험해보세요!
+      🔍 당신의 지혜와 운을 시험해보세요!
                                 
-이 앱은 단순한 퀴즈 게임이 아닙니다.
-10개의 문제를 풀면서 
-당신의 지식과 직감을 시험해 보세요!
-하지만 조심하세요… 
-게임 중 뜻밖의 기회(?)가 찾아올지도?
-마지막까지 도전할 준비가 되었나요? 🎲✨
+      이 앱은 단순한 퀴즈 게임이 아닙니다.
+      10개의 문제를 풀면서 
+      당신의 지식과 직감을 시험해 보세요!
+      하지만 조심하세요… 
+      게임 중 뜻밖의 기회(?)가 찾아올지도?
+      마지막까지 도전할 준비가 되었나요? 🎲✨
                   ''',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -110,7 +110,8 @@ class _MainScreenState extends State<MainScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => QuizScreen()),
+                                    builder: (context) => QuizScreen(),
+                                    settings: RouteSettings(name: 'quiz_screen')),
                               ).then((_) {
                                 setState(() {
                                   _gameData = GameStorageService()
@@ -180,6 +181,7 @@ class _MainScreenState extends State<MainScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => QuizScreen(),
+                                  settings: RouteSettings(name: 'quiz_screen')
                                 ),
                               ).then(
                                 (_) {
