@@ -271,6 +271,7 @@ class _QuizScreenState extends State<QuizScreen> {
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(16)), // 둥근 모서리 추가
       ),
+      enableDrag: false,
       builder: (context) {
         double screenHeight = MediaQuery.of(context).size.height;
         double bottomSheetHeight =
