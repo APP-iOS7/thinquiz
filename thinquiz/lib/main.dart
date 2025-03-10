@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'main_screen.dart';
-import 'model/game.dart';
+
+import 'models/game.dart';
+import 'providers/game_provider.dart';
 import 'services/game_storage_service.dart';
 
 void main() {
@@ -16,9 +19,6 @@ class MyApp extends StatelessWidget {
   Future<List<Game>> _loadGameData() async {
     Game? savedGame = await _storageService.loadGame();
     if (savedGame == null) {
-      // 데이터 임시 생성
-      // await _storageService.saveGame(_defaultGameData);
-      // return [_defaultGameData];
       return [];
     }
     return [savedGame];
@@ -26,14 +26,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF003049)),
-        useMaterial3: true,
-      ),
-      home: MainScreen(
-        gameData: _loadGameData(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => GameProvider())],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF003049)),
+          useMaterial3: true,
+        ),
+        home: MainScreen(
+          gameData: _loadGameData(),
+        ),
       ),
     );
   }

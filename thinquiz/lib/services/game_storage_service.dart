@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thinquiz/models/game.dart';
 
-import '../model/game.dart';
-import '../model/quiz.dart';
+import '../models/quiz.dart';
 
 class GameStorageService {
   static const String _gameKey = 'thinq_game_data';
@@ -24,7 +24,7 @@ class GameStorageService {
                   'content': quiz.content,
                   'answer': quiz.answer,
                   'solution': quiz.solution,
-                  'status': quiz.status,
+                  'status': quiz.status.toString().split('.').last,
                   'quizImage': quiz.quizImage,
                 })
             .toList(),
@@ -57,7 +57,8 @@ class GameStorageService {
                 content: quizMap['content'],
                 answer: quizMap['answer'],
                 solution: quizMap['solution'],
-                status: quizMap['status'],
+                status: QuizStatus.values.firstWhere(
+                    (e) => e.toString().split('.').last == quizMap['status']),
                 quizImage: quizMap['quizImage'],
               ))
           .toList();

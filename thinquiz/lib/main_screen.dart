@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:thinquiz/providers/game_provider.dart';
 
-import 'model/game.dart';
-import 'model/quiz.dart';
+import 'models/game.dart';
 import 'quiz_list_screen.dart';
 import 'services/game_storage_service.dart';
 
@@ -100,46 +101,11 @@ class _MainScreenState extends State<MainScreen> {
                           ElevatedButton(
                             onPressed: () async {
                               final storageService = GameStorageService();
-                              final Game defaultGameData = Game(
-                                hintCount: 3,
-                                quizIndex: 0,
-                                totalPoint: 0,
-                                quizList: [
-                                  Quiz(
-                                    title: '퀴즈 1: 대한민국의 수도는?',
-                                    point: 10,
-                                    hint: '4글자입니다.',
-                                    content: '대한민국의 수도를 맞춰보세요.',
-                                    answer: '서울',
-                                    solution: '대한민국의 수도는 서울입니다.',
-                                    status: 'correct',
-                                    quizImage: 'assets/earth.png',
-                                  ),
-                                  Quiz(
-                                    title: '퀴즈 2: 1+1은?',
-                                    point: 10,
-                                    hint: '매우 쉬운 문제입니다.',
-                                    content: '더하기 연산을 해보세요.',
-                                    answer: '2',
-                                    solution: '1+1=2 입니다.',
-                                    status: 'incorrect',
-                                    quizImage: '',
-                                  ),
-                                  Quiz(
-                                    title: '퀴즈 3: 바다가 아닌 것은?',
-                                    point: 10,
-                                    hint: '색깔 이름이 들어간 바다를 생각해보세요.',
-                                    content: '다음 중 실제 바다 이름이 아닌 것은?',
-                                    answer: '보라해',
-                                    solution:
-                                        '홍해, 황해, 청해는 실제 바다 이름이지만, 보라해는 존재하지 않습니다.',
-                                    status: 'incorrect',
-                                    quizImage: '',
-                                  ),
-                                ],
-                              );
+                              final gameProvider = Provider.of<GameProvider>(
+                                  context,
+                                  listen: false);
+                              final Game defaultGameData = gameProvider.item;
                               await storageService.saveGame(defaultGameData);
-
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -218,14 +184,16 @@ class _MainScreenState extends State<MainScreen> {
                                   builder: (context) =>
                                       QuizListScreen(gameData: _gameData),
                                 ),
-                              ).then((_) {
-                                setState(() {
-                                  _gameData = GameStorageService()
-                                      .loadGame()
-                                      .then(
-                                          (game) => game == null ? [] : [game]);
-                                });
-                              });
+                              ).then(
+                                (_) {
+                                  setState(() {
+                                    _gameData = GameStorageService()
+                                        .loadGame()
+                                        .then((game) =>
+                                            game == null ? [] : [game]);
+                                  });
+                                },
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
@@ -260,9 +228,18 @@ class _MainScreenState extends State<MainScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => QuizListScreen(
-                                              gameData: widget._gameData,
-                                            )),
+                                      builder: (context) =>
+                                          QuizListScreen(gameData: _gameData),
+                                    ),
+                                  ).then(
+                                    (_) {
+                                      setState(() {
+                                        _gameData = GameStorageService()
+                                            .loadGame()
+                                            .then((game) =>
+                                                game == null ? [] : [game]);
+                                      });
+                                    },
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
