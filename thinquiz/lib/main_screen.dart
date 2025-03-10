@@ -167,7 +167,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  '진행 상황: ${snapshot.data!.first.quizIndex + 1} / 10',
+                                  '진행 상황: ${snapshot.data!.first.quizIndex} / 10',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xFF003049),
