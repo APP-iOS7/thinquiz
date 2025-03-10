@@ -38,58 +38,77 @@ class ResultScreenIncorrect extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
+                          child: GestureDetector(
+                            onTap: () {
                               Navigator.pop(context);
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              height: 50, // 버튼 높이
+                              decoration: BoxDecoration(
+                                color: Colors.white, // 버튼 배경색
+                                borderRadius:
+                                    BorderRadius.circular(8), // 버튼 모서리 둥글게
+                                border: Border.all(
+                                  color: Color(0xFFB9BAA3), // 테두리 색상
+                                  width: 2, // 테두리 두께
+                                ),
                               ),
-                              elevation: 4,
-                            ),
-                            child: Text(
-                              '이대로 다시 도전',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                              child: Center(
+                                child: Text(
+                                  '이대로 다시 도전',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(height: 16),
                         SizedBox(height: 16),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              game.increaseQuizIndex();
-                              LuckyCardManager().currentCard = null;
+                        GestureDetector(
+                          onTap: () {
+                            game.increaseQuizIndex();
+                            LuckyCardManager().currentCard = null;
 
-                              // 3,7 스테이지 (행운카드 뽑기)
-                              if (game.quizIndex == 2 || game.quizIndex == 6) {
-                                game.drawLuckyCard(context);
-                              } else {
-                                Navigator.pop(context);
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                            // 3,7 스테이지 (행운카드 뽑기)
+                            if (game.quizIndex == 2 || game.quizIndex == 6) {
+                              game.drawLuckyCard(context);
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Container(
+                            height: 50, // 버튼 높이
+                            decoration: BoxDecoration(
+                              color: Colors.white, // 버튼 배경색
+                              borderRadius:
+                                  BorderRadius.circular(8), // 버튼 모서리 둥글게
+                              border: Border.all(
+                                color: Color(0xFFB9BAA3), // 테두리 색상
+                                width: 2, // 테두리 두께
                               ),
-                              elevation: 4,
                             ),
-                            child: Text(
-                              '나중에 풀기',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            child: Container(
+                              height: 50, // 버튼 높이
+                              decoration: BoxDecoration(
+                                color: Color(0xFFB9BAA3), // 버튼 배경색
+                                borderRadius:
+                                    BorderRadius.circular(8), // 버튼 모서리 둥글게
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '다음에 풀기',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
                           ),
-                        )
+                        ),
                       ]),
                 ),
               ),

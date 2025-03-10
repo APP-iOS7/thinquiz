@@ -207,6 +207,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 _initStage();
 
                                 game.drawLuckyCard(context);
+
                               }
                             },
                             child: const Text('패스',

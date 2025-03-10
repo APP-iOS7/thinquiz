@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/managers/lucky_card_manager.dart';
-import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 
@@ -163,7 +162,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                                 color: Color(0xFFD6D5C9),
                                 borderRadius: BorderRadius.circular(16),
@@ -181,7 +180,7 @@ class _MainScreenState extends State<MainScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xFF003049),
-                                    fontSize: 18,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -193,7 +192,7 @@ class _MainScreenState extends State<MainScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Color(0xFF003049),
-                                    fontSize: 18,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -240,23 +239,54 @@ class _MainScreenState extends State<MainScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFA22C29),
                               foregroundColor: Color(0xFFD6D5C9),
+                          Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 14,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 4,
-                            ),
-                            child: const Text(
-                              '이어 하기',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                                  horizontal: 16), // 좌우 16씩 패딩 추가
+                              child: SizedBox(
+                                  width: double.infinity, // 화면 너비를 꽉 채우도록 설정
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => QuizScreen(),
+                                            settings: RouteSettings(
+                                                name: 'quiz_screen')),
+                                      ).then(
+                                        (_) async {
+                                          final gameProvider =
+                                              Provider.of<GameProvider>(context,
+                                                  listen: false);
+                                          gameProvider.findFirstUnsolved();
+                                          final storageService =
+                                              GameStorageService();
+                                          await storageService
+                                              .saveGame(gameProvider.item);
+                                          setState(() {
+                                            _gameData = GameStorageService()
+                                                .loadGame()
+                                                .then((game) =>
+                                                    game == null ? [] : [game]);
+                                          });
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFFD6D5C9),
+                                      foregroundColor: Colors.black,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 4,
+                                    ),
+                                    child: const Text(
+                                      '이어 하기',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ))),
                           const SizedBox(
                             height: 300,
                           ),
@@ -298,7 +328,9 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                                 child: Text(
                                   '문제 보기',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               ElevatedButton(
@@ -350,6 +382,7 @@ class _MainScreenState extends State<MainScreen> {
                                 child: Text(
                                   '진행 상황 초기화',
                                   style: TextStyle(
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
