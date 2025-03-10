@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 
-import 'models/game.dart';
+import '../models/game.dart';
 import 'quiz_list_screen.dart';
+
+import '../services/game_storage_service.dart';
 import 'screens/quiz_screen.dart';
-import 'services/game_storage_service.dart';
 
 class MainScreen extends StatefulWidget {
   final Future<List<Game>> _gameData;
@@ -79,14 +80,14 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             child: const Text(
                               '''
-      🔍 당신의 지혜와 운을 시험해보세요!
+🔍 당신의 지혜와 운을 시험해보세요!
                                 
-      이 앱은 단순한 퀴즈 게임이 아닙니다.
-      10개의 문제를 풀면서 
-      당신의 지식과 직감을 시험해 보세요!
-      하지만 조심하세요… 
-      게임 중 뜻밖의 기회(?)가 찾아올지도?
-      마지막까지 도전할 준비가 되었나요? 🎲✨
+이 앱은 단순한 퀴즈 게임이 아닙니다.
+10개의 문제를 풀면서 
+당신의 지식과 직감을 시험해 보세요!
+하지만 조심하세요… 
+게임 중 뜻밖의 기회(?)가 찾아올지도?
+마지막까지 도전할 준비가 되었나요? 🎲✨
                   ''',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -111,7 +112,8 @@ class _MainScreenState extends State<MainScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => QuizScreen(),
-                                    settings: RouteSettings(name: 'quiz_screen')),
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
                               ).then((_) {
                                 setState(() {
                                   _gameData = GameStorageService()
@@ -162,14 +164,30 @@ class _MainScreenState extends State<MainScreen> {
                                     offset: Offset(0, 3),
                                   )
                                 ]),
-                            child: Text(
-                              '진행 상황: ${snapshot.data!.first.totalPoint}점',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF003049),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '진행 상황: ${snapshot.data!.first.quizIndex + 1} / 10',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF003049),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  '획득 점수: ${snapshot.data!.first.totalPoint}점',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF003049),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -180,9 +198,9 @@ class _MainScreenState extends State<MainScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuizScreen(),
-                                  settings: RouteSettings(name: 'quiz_screen')
-                                ),
+                                    builder: (context) => QuizScreen(),
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
                               ).then(
                                 (_) {
                                   setState(() {
