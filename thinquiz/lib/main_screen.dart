@@ -208,6 +208,11 @@ class _MainScreenState extends State<MainScreen> {
                                   width: double.infinity, // 화면 너비를 꽉 채우도록 설정
                                   child: ElevatedButton(
                                     onPressed: () {
+                                      final gameProvider =
+                                              Provider.of<GameProvider>(context,
+                                                  listen: false);
+                                      gameProvider.findFirstUnsolved();
+
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -219,7 +224,6 @@ class _MainScreenState extends State<MainScreen> {
                                           final gameProvider =
                                               Provider.of<GameProvider>(context,
                                                   listen: false);
-                                          gameProvider.findFirstUnsolved();
                                           final storageService =
                                               GameStorageService();
                                           await storageService

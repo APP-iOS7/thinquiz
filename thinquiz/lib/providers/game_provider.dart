@@ -225,8 +225,21 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
+  bool isExistNextIndex() {
+    int nextUnsolved = _item.quizList
+        .sublist(_item.quizIndex + 1)
+        .indexWhere((quiz) => quiz.status != QuizStatus.correct);
+
+    return nextUnsolved != -1 ? true : false;
+  }
+
   // 다음 미해결 문제로 이동
   void moveToNextUnsolved() {
+    if (isPerfect()) {
+      _item.quizIndex = _item.quizList.length - 1;
+      return;
+    }
+
     if (_item.quizIndex >= _item.quizList.length - 1) return;
 
     int nextUnsolved = _item.quizList
@@ -242,14 +255,17 @@ class GameProvider extends ChangeNotifier {
 
   // 기존 increaseQuizIndex 메서드 수정
   void increaseQuizIndex() async {
-    if (_item.quizList[_item.quizIndex].status == QuizStatus.correct) {
-      moveToNextUnsolved();
-    } else {
-      if (_item.quizIndex < 9) {
-        _item.quizIndex++;
-        //_item.quizList[_item.quizIndex].status = QuizStatus.solving;
-      }
-    }
+    // if (_item.quizList[_item.quizIndex].status == QuizStatus.correct) {
+    //   moveToNextUnsolved();
+    // } else {
+    //   if (_item.quizIndex < 9) {
+    //     _item.quizIndex++;
+    //     //_item.quizList[_item.quizIndex].status = QuizStatus.solving;
+    //   }
+    // }
+    moveToNextUnsolved();
+    //findFirstUnsolved();
+
     await saveGameState();
     notifyListeners();
   }
@@ -263,6 +279,15 @@ class GameProvider extends ChangeNotifier {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LuckyCardScreen()));
     }
+  }
+
+  bool isPerfect() {
+    for (var quiz in item.quizList) {
+      if (quiz.status != QuizStatus.correct) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // // 문제 나가기 처리를 위한 메서드 추가

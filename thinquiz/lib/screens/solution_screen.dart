@@ -78,8 +78,8 @@ class _SolutionScreenState extends State<SolutionScreen> {
                   height: 20,
                 ),
                 Text(
-                    game.quizItems[game.quizIndex].answer,
-                    style: TextStyle(fontSize: 12))
+                    game.quizItems[game.quizIndex].solution,
+                    style: TextStyle(fontSize: 18))
               ],
             ),
           ),

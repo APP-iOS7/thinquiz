@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thinquiz/main_screen.dart';
 
-import '../models/game.dart';
 import '../providers/game_provider.dart';
 import '../services/game_storage_service.dart' show GameStorageService;
 

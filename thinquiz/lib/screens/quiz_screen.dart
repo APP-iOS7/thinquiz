@@ -4,13 +4,11 @@ import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/screens/lucky_card_screen.dart';
 import 'package:thinquiz/screens/memo_screen.dart';
 import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
 import 'package:thinquiz/services/game_storage_service.dart';
 
-import 'complete_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -231,7 +229,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   }
                                 },
                                 child: const Text('패스',
-                                    style: TextStyle(color: Colors.black)))),
+                                  style: TextStyle(color: Colors.black)))),
                         SizedBox(width: 10),
                         Expanded(
                             child: TextButton(
@@ -277,22 +275,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
     _initStage();
     await GameStorageService().saveGame(game.item);
-    if (game.quizIndex == 9) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => QuestCompletedScreen(
-                    totalPoint: game.item.totalPoint,
-                  )));
-    } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
-    }
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ResultScreenCorrect()));
   }
 
   void _handleWrongAnswer(GameProvider game) async {
     game.quizItems[game.quizIndex].status = QuizStatus.incorrect;
     await GameStorageService().saveGame(game.item);
+
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ResultScreenIncorrect()));
   }

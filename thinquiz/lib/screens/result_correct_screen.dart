@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/main_screen.dart';
 import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/lucky_card.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/screens/lucky_card_screen.dart';
+import 'package:thinquiz/screens/complete_screen.dart';
+import 'package:thinquiz/services/game_storage_service.dart';
 import './solution_screen.dart';
 
 class ResultScreenCorrect extends StatelessWidget {
@@ -19,6 +21,36 @@ class ResultScreenCorrect extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.9, // 화면 높이의 90%로 설정
         child: const SolutionScreen(),
       ),
+    );
+  }
+
+  void showLastDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('마지막 문제입니다.'),
+          content: Text('메인 화면으로 돌아갑니다.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                final GameStorageService storageService = GameStorageService();
+
+                // Game? savedGame = await _storageService.loadGame();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainScreen(
+                            gameData: storageService
+                                .loadGame()
+                                .then((game) => game == null ? [] : [game]))),
+                    (route) => false);
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -113,6 +145,37 @@ class ResultScreenCorrect extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
+                                // 마지막 문제에 도달
+                                if (game.quizIndex ==
+                                    game.quizItems.length - 1) {
+                                  print('1');
+                                  if (!game.isPerfect()) {
+                                    // 틀린 문제가 있다면
+                                    print('2');
+                                    showLastDialog(context);
+                                    return;
+                                  }
+                                }
+
+                                // 못 맞춘 문제가 없는 경우
+                                if (game.isPerfect()) {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              QuestCompletedScreen(
+                                                totalPoint:
+                                                    game.item.totalPoint,
+                                              )));
+                                  return;
+                                }
+
+                                // 못 푼 문제가 현재 위치보다 뒤에 없는 경우(앞에만 있음) -> 메인 화면으로
+                                if (!game.isExistNextIndex()) {
+                                  showLastDialog(context);
+                                  return;
+                                }
+
                                 LuckyCardManager().currentCard = null;
 
                                 game.increaseQuizIndex();

@@ -1,12 +1,43 @@
 // 오답화면
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/main_screen.dart';
 import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/providers/game_provider.dart';
-import 'package:thinquiz/screens/lucky_card_screen.dart';
+import 'package:thinquiz/services/game_storage_service.dart';
 
 class ResultScreenIncorrect extends StatelessWidget {
   const ResultScreenIncorrect({super.key});
+
+  void showLastDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('마지막 문제입니다.'),
+          content: Text('메인 화면으로 돌아갑니다.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                final GameStorageService storageService = GameStorageService();
+
+                // Game? savedGame = await _storageService.loadGame();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainScreen(
+                            gameData: storageService
+                                .loadGame()
+                                .then((game) => game == null ? [] : [game]))),
+                    (route) => false);
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +100,18 @@ class ResultScreenIncorrect extends StatelessWidget {
                         SizedBox(height: 16),
                         GestureDetector(
                           onTap: () {
+                            // 마지막 문제에 도달했을 때
+                            if (game.quizIndex == game.quizItems.length - 1) {
+                              showLastDialog(context);
+                              return;
+                            }
+
+                            // 못 푼 문제가 현재 위치보다 뒤에 없는 경우(앞에만 있음) -> 메인 화면으로
+                            if (!game.isExistNextIndex()) {
+                                  showLastDialog(context);
+                                  return;
+                            }
+
                             game.increaseQuizIndex();
                             LuckyCardManager().currentCard = null;
 
