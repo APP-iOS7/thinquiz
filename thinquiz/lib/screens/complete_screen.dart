@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:thinquiz/main_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Times New Roman', // 고급스러운 느낌의 서체 사용
-        primarySwatch: Colors.blue,
-      ),
-      home: QuestCompletedScreen(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       theme: ThemeData(
+//         fontFamily: 'Times New Roman', // 고급스러운 느낌의 서체 사용
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: QuestCompletedScreen(),
+//     );
+//   }
+// }
 
 class QuestCompletedScreen extends StatelessWidget {
-  const QuestCompletedScreen({super.key});
+  final int totalPoint;
+  const QuestCompletedScreen({super.key, required this.totalPoint});
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,7 @@ class QuestCompletedScreen extends StatelessWidget {
                     ),
                     child: TextButton(
                       onPressed: () {
+                        MainScreen(gameData: Future.value([]));
                         // 버튼 클릭 시 실행될 코드
                         print('메인으로 이동');
                       },

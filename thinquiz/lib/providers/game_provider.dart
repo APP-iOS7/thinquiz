@@ -235,8 +235,10 @@ class GameProvider extends ChangeNotifier {
     if (_item.quizList[_item.quizIndex].status == QuizStatus.correct) {
       moveToNextUnsolved();
     } else {
-      _item.quizIndex++;
-      _item.quizList[_item.quizIndex].status = QuizStatus.solving;
+      if (_item.quizIndex < 9) {
+        _item.quizIndex++;
+        _item.quizList[_item.quizIndex].status = QuizStatus.solving;
+      }
     }
     await saveGameState();
     notifyListeners();
