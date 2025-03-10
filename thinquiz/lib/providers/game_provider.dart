@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:thinquiz/models/game.dart';
 import 'package:thinquiz/models/quiz.dart';
 
+import '../services/game_storage_service.dart';
+
 class GameProvider extends ChangeNotifier {
   final Game _item = Game(hintCount: 3, quizIndex: 0, totalPoint: 0, quizList: [
     Quiz(
@@ -119,6 +121,20 @@ class GameProvider extends ChangeNotifier {
 
   void increaseQuizIndex() {
     _item.quizIndex++;
+    notifyListeners();
+  }
+
+  // main_screen 의 진행 사항 초기화 버튼 동작을 위해 코드 추가
+  Future<void> clearGame() async {
+    final storageService = GameStorageService();
+    await storageService.clearGame();
+
+    _item.hintCount = 3;
+    _item.quizIndex = 0;
+    _item.totalPoint = 0;
+    for (var quiz in _item.quizList) {
+      quiz.status = QuizStatus.pending;
+    }
     notifyListeners();
   }
 }

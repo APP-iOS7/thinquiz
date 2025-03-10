@@ -72,7 +72,7 @@ class QuizSolutionScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   )),
                               if (snapshot.data!.quizImage.isNotEmpty ||
-                                  snapshot.data!.quizImage != null)
+                                  snapshot.data!.quizImage != '')
                                 const SizedBox(
                                   height: 10,
                                 ),

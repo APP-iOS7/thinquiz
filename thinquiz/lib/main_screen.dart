@@ -4,6 +4,7 @@ import 'package:thinquiz/providers/game_provider.dart';
 
 import 'models/game.dart';
 import 'quiz_list_screen.dart';
+import 'screens/quiz_screen.dart';
 import 'services/game_storage_service.dart';
 
 class MainScreen extends StatefulWidget {
@@ -109,10 +110,7 @@ class _MainScreenState extends State<MainScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuizListScreen(
-                                    gameData: _gameData,
-                                  ),
-                                ),
+                                    builder: (context) => QuizScreen()),
                               ).then((_) {
                                 setState(() {
                                   _gameData = GameStorageService()
@@ -181,8 +179,7 @@ class _MainScreenState extends State<MainScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      QuizListScreen(gameData: _gameData),
+                                  builder: (context) => QuizScreen(),
                                 ),
                               ).then(
                                 (_) {
@@ -284,8 +281,10 @@ class _MainScreenState extends State<MainScreen> {
                                       // Dialog 외부 터치 시 null을 반환하므로 false로 처리
                                       false;
                                   if (confirmed) {
-                                    final storageService = GameStorageService();
-                                    await storageService.clearGame();
+                                    final gameProvider =
+                                        Provider.of<GameProvider>(context,
+                                            listen: false);
+                                    await gameProvider.clearGame();
                                     setState(() {
                                       _gameData = Future.value([]);
                                     });
