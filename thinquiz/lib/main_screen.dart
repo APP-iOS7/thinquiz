@@ -214,6 +214,7 @@ class _MainScreenState extends State<MainScreen> {
                                   final gameProvider =
                                       Provider.of<GameProvider>(context,
                                           listen: false);
+                                  gameProvider.findFirstUnsolved();
                                   final storageService = GameStorageService();
                                   await storageService
                                       .saveGame(gameProvider.item);

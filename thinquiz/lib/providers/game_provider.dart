@@ -187,6 +187,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   GameProvider() {
+    print('click');
     _loadSavedGame();
   }
 
@@ -195,7 +196,7 @@ class GameProvider extends ChangeNotifier {
     final savedGame = await _storageService.loadGame();
     if (savedGame != null) {
       _item = savedGame;
-      _findFirstUnsolved(); // 첫 미해결 문제 인덱스 찾기
+      findFirstUnsolved(); // 첫 미해결 문제 인덱스 찾기
     } else {
       _initializeNewGame();
     }
@@ -203,7 +204,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   // 첫 미해결 문제 찾기
-  void _findFirstUnsolved() {
+  void findFirstUnsolved() {
     int firstUnsolved =
         _item.quizList.indexWhere((quiz) => quiz.status != QuizStatus.correct);
 
