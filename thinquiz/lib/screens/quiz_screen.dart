@@ -69,7 +69,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                     child: Container(
                                       width: 20,
                                       height: 20,
-                                      color: i == game.quizIndex ? Color(0xffffc300) : game.getQuizColor(i),
+                                      color: i == game.quizIndex
+                                          ? Color(0xffffc300)
+                                          : game.getQuizColor(i),
                                       child: Center(
                                         child: Text(
                                           '${i + 1}',
@@ -204,15 +206,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                 game.increaseQuizIndex();
                                 _initStage();
 
-                                // 3,7 스테이지 (행운카드 뽑기)
-                                if (game.quizIndex == 2 ||
-                                    game.quizIndex == 6) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LuckyCardScreen()));
-                                }
+                                game.drawLuckyCard(context);
+
                               }
                             },
                             child: const Text('패스',
@@ -261,8 +256,10 @@ class _QuizScreenState extends State<QuizScreen> {
     _initStage();
     await GameStorageService().saveGame(game.item);
     if (game.quizIndex == 9) {
-      Navigator.pushReplacement( context,
-          MaterialPageRoute( builder: (context) => QuestCompletedScreen(
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => QuestCompletedScreen(
                     totalPoint: game.item.totalPoint,
                   )));
     } else {

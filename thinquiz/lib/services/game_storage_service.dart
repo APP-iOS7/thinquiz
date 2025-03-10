@@ -16,6 +16,7 @@ class GameStorageService {
         'hintCount': game.hintCount,
         'quizIndex': game.quizIndex,
         'totalPoint': game.totalPoint,
+        'chanceCount': game.chanceCount,
         'quizList': game.quizList
             .map((quiz) => {
                   'title': quiz.title,
@@ -69,6 +70,7 @@ class GameStorageService {
         hintCount: gameMap['hintCount'],
         quizIndex: gameMap['quizIndex'],
         totalPoint: gameMap['totalPoint'],
+        chanceCount: gameMap['chanceCount'],
         quizList: quizList,
       );
     } catch (e) {

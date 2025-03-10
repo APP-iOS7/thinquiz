@@ -74,10 +74,7 @@ class ResultScreenIncorrect extends StatelessWidget {
 
                             // 3,7 스테이지 (행운카드 뽑기)
                             if (game.quizIndex == 2 || game.quizIndex == 6) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LuckyCardScreen()));
+                              game.drawLuckyCard(context);
                             } else {
                               Navigator.pop(context);
                             }

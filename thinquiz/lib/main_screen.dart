@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thinquiz/managers/lucky_card_manager.dart';
 import 'package:thinquiz/models/quiz.dart';
 import 'package:thinquiz/providers/game_provider.dart';
 
@@ -201,6 +202,43 @@ class _MainScreenState extends State<MainScreen> {
                           const SizedBox(
                             height: 100,
                           ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // 미해결 된 문제 index 찾기
+                              final gameProvider = Provider.of<GameProvider>(
+                                  context,
+                                  listen: false);
+                              gameProvider.findFirstUnsolved();
+
+                              // 남아있는 찬스카드 삭제
+                              LuckyCardManager().currentCard = null;
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => QuizScreen(),
+                                    settings:
+                                        RouteSettings(name: 'quiz_screen')),
+                              ).then(
+                                (_) async {
+                                  final gameProvider =
+                                      Provider.of<GameProvider>(context,
+                                          listen: false);
+                                  final storageService = GameStorageService();
+                                  await storageService
+                                      .saveGame(gameProvider.item);
+                                  setState(() {
+                                    _gameData = GameStorageService()
+                                        .loadGame()
+                                        .then((game) =>
+                                            game == null ? [] : [game]);
+                                  });
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFA22C29),
+                              foregroundColor: Color(0xFFD6D5C9),
                           Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16), // 좌우 16씩 패딩 추가
