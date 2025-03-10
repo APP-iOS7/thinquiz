@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFB9BAA3),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF003049),
         title: const Text(
           'ThinQuiz',
