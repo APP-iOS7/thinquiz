@@ -159,6 +159,7 @@ class ResultScreenCorrect extends StatelessWidget {
 
                                 // 못 맞춘 문제가 없는 경우
                                 if (game.isPerfect()) {
+                                  print('3');
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -172,6 +173,7 @@ class ResultScreenCorrect extends StatelessWidget {
 
                                 // 못 푼 문제가 현재 위치보다 뒤에 없는 경우(앞에만 있음) -> 메인 화면으로
                                 if (!game.isExistNextIndex()) {
+                                  print('4');
                                   showLastDialog(context);
                                   return;
                                 }
