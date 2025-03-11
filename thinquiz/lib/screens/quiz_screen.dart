@@ -9,7 +9,6 @@ import 'package:thinquiz/screens/result_correct_screen.dart';
 import 'package:thinquiz/screens/result_incorrect_screen.dart';
 import 'package:thinquiz/services/game_storage_service.dart';
 
-
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
@@ -35,6 +34,9 @@ class _QuizScreenState extends State<QuizScreen> {
         backgroundColor: Color(0xFFB9BAA3),
         appBar: AppBar(
           backgroundColor: Color(0xFF003049),
+          iconTheme: IconThemeData(
+            color: Color(0xFFD6D5C9), // 백버튼 색상 변경
+          ),
           title: Text(
             game.quizItems[game.item.quizIndex].title,
             style: TextStyle(
@@ -229,7 +231,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   }
                                 },
                                 child: const Text('패스',
-                                  style: TextStyle(color: Colors.black)))),
+                                    style: TextStyle(color: Colors.black)))),
                         SizedBox(width: 10),
                         Expanded(
                             child: TextButton(
